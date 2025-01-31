@@ -1,42 +1,40 @@
-import React from "react";
+import { useEffect } from "react";
 import Navbar from "../Component/navbar";
 import Alert from "../Component/alert";
 import { connect } from "react-redux";
 import { verify, getUser, googleLogin } from "../reducer/Actions";
 import { useLocation } from "react-router";
 import queryString from "query-string";
-import { useEffect } from "react";
 
-
-const Layout = (props) => {
+const Layout = ({ message, googleLogin, verify, getUser, children }) => {
     let location = useLocation();
-    useEffect (() => {
+
+    useEffect(() => {
         const values = queryString.parse(location.search);
         const code = values.code;
-        if ( code ) {
-            props.googleLogin( code );
+        if (code) {
+            googleLogin(code);
         } else {
-            props.verify();
-            props.getUser();
+            verify();
+            getUser();
         }
-    }, [location]);
+    }, [location, googleLogin, verify, getUser]);
+
     return (
         <div>
-            < Navbar />
-            {props.message? <Alert message={props.message}/>: null}
-            {props.children}
+            <Navbar />
+            {message ? <Alert message={message} /> : null}
+            {children}
         </div>
-    )
-}
+    );
+};
 
-const mapStateToProps = (state) => {
-    return {
-        message: state.AuthReducer.message,
-        access: state.AuthReducer.access,
-        refresh: state.AuthReducer.refresh,
-        isAuthenticated: state.AuthReducer.isAuthenticated,
-        user: state.AuthReducer.user
-    }
-}
+const mapStateToProps = (state) => ({
+    message: state.AuthReducer.message,
+    access: state.AuthReducer.access,
+    refresh: state.AuthReducer.refresh,
+    isAuthenticated: state.AuthReducer.isAuthenticated,
+    user: state.AuthReducer.user
+});
 
 export default connect(mapStateToProps, { verify, getUser, googleLogin })(Layout);

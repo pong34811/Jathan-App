@@ -12,29 +12,26 @@ import "./css/main.css";
 import { Provider } from "react-redux";
 import Store from "./Store";
 import Boards from "./Pages/Dashboards/Pages";
+import ListPage from "./Pages/Dashboards/Lists/ListPage";
 
 function App() {
   return (
     <Provider store={Store}>
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="change/password/" element={<ChangePassword />} />
-            <Route path="reset/password/" element={<ResetPassword />} />
-            <Route
-              path="dj-rest-auth/registration/account-confirm-email/:key/"
-              element={<EmailVerification />}
-            />
-            <Route
-              path="reset/password/confirm/:uid/:token"
-              element={<ResetPasswordConfirm />}
-            />
-            <Route path="/dashboard" element={<Boards />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          {/* Routes ที่มี Layout */}
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="login" element={<Layout><Login /></Layout>} />
+          <Route path="signup" element={<Layout><Signup /></Layout>} />
+          <Route path="change/password/" element={<Layout><ChangePassword /></Layout>} />
+          <Route path="reset/password/" element={<Layout><ResetPassword /></Layout>} />
+          <Route path="dj-rest-auth/registration/account-confirm-email/:key/" element={<Layout><EmailVerification /></Layout>} />
+          <Route path="reset/password/confirm/:uid/:token" element={<Layout><ResetPasswordConfirm /></Layout>} />
+          <Route path="/dashboard" element={<Layout><Boards /></Layout>} />
+
+          {/* Route สำหรับ /list โดยไม่ใช้ Layout */}
+          <Route path="/list" element={<ListPage />} />
+        </Routes>
       </Router>
     </Provider>
   );
