@@ -3,9 +3,11 @@ from rest_framework import serializers
 from .models import Board, List, Task
 
 class BoardSerializer(serializers.ModelSerializer):
+    list_count = serializers.IntegerField()
+    task_count = serializers.IntegerField()
     class Meta:
         model = Board
-        fields = ['id', 'title', 'created_at', 'updated_at', 'user', 'created_by', 'updated_by']
+        fields = ['id', 'title','list_count', 'task_count',   'created_at', 'updated_at', 'user', 'created_by', 'updated_by']
 
 class TaskSerializer(serializers.ModelSerializer):
     list = serializers.PrimaryKeyRelatedField(queryset=List.objects.all())

@@ -6,11 +6,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from boards.models import Board, List, Task
 from .serializers import ListSerializer, BoardSerializer, TaskSerializer
 from rest_framework.filters import SearchFilter
+from django.db.models import Count
 
 class BoardViewSet(viewsets.ModelViewSet):
-    queryset = Board.objects.all()
+    queryset = Board.objects.all().annotate(
+        list_count=Count('lists'),  # จำนวน List ที่เกี่ยวข้องกับ Board นี้
+        task_count=Count('lists__tasks')  # จำนวน Task ที่เกี่ยวข้องกับ List ใน Board นี้
+    )
     serializer_class = BoardSerializer
-    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['user']
     search_fields = ['title']
@@ -24,7 +27,8 @@ class BoardViewSet(viewsets.ModelViewSet):
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.prefetch_related('tasks')
     serializer_class = ListSerializer
-
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['board']
     def get_queryset(self):
         board_id = self.request.query_params.get('board', None)
         if board_id is not None:

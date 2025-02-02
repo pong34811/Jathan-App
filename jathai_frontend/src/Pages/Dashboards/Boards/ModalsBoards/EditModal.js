@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { URL_AUTH } from "../../../Apis/ConfigApis";
+import { URL_AUTH } from "../../../../Apis/ConfigApis";
 
 const EditModal = ({ id, boardId, onSave }) => {
   const [newTitle, setNewTitle] = useState("");
