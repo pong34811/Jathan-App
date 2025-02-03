@@ -3,8 +3,8 @@ from rest_framework import serializers
 from .models import Board, List, Task
 
 class BoardSerializer(serializers.ModelSerializer):
-    list_count = serializers.IntegerField()
-    task_count = serializers.IntegerField()
+    list_count = serializers.IntegerField(read_only=True)
+    task_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Board
         fields = ['id', 'title','list_count', 'task_count',   'created_at', 'updated_at', 'user', 'created_by', 'updated_by']
