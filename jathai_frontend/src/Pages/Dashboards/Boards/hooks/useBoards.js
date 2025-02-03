@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { URL_AUTH } from "../../../../Apis/ConfigApis";
 
-const useBoards = () => {
+const useBoards = (searchTerm = "") => {
     const [boards, setBoards] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchBoards = async (userId) => {
+    const fetchBoards = async (userId, search = "") => {
         setLoading(true);
         try {
             const token = localStorage.getItem("access");
@@ -14,7 +14,10 @@ const useBoards = () => {
                 return;
             }
 
-            const response = await fetch(`${URL_AUTH.BoardAPI}?user=${userId}`, {
+            const apiUrl = `${URL_AUTH.BoardAPI}?user=${userId}&search=${search}`;
+            console.log("Fetching from API:", apiUrl); // ✅ Debug URL API
+
+            const response = await fetch(apiUrl, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,12 +72,12 @@ const useBoards = () => {
         const loadUserData = async () => {
             const userId = await fetchUser();
             if (userId) {
-                fetchBoards(userId);
+                fetchBoards(userId, searchTerm); // ✅ ใช้ searchTerm
             }
         };
 
         loadUserData();
-    }, []);
+    }, [searchTerm]); // ✅ เมื่อ searchTerm เปลี่ยน จะโหลดข้อมูลใหม่
 
     return { boards, loading };
 };

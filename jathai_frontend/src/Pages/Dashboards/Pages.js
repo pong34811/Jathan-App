@@ -3,7 +3,7 @@ import Boardspage from './Boards/Boards';
 
 function Pages() {
   return (
-    <div className="container mt-5">
+    <div className="container ">
       <div className="text-center mb-4">
         <h1 className="fw-bold text-primary">📌 My Board Overview</h1>
         <p className="text-muted">

@@ -8,7 +8,7 @@ function navbar({ logout, isAuthenticated }) {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          Mywebsite.co.id
+          Jathan App
         </Link>
         <button
           className="navbar-toggler"
@@ -34,7 +34,7 @@ function navbar({ logout, isAuthenticated }) {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="change/password/"
+                    to="/change/password"
                   >
                     Change Password
                   </Link> 
@@ -56,7 +56,7 @@ function navbar({ logout, isAuthenticated }) {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="login/"
+                    to="/login"
                   >
                     Login
                   </Link>
@@ -65,7 +65,7 @@ function navbar({ logout, isAuthenticated }) {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="signup/"
+                    to="/signup"
                   >
                     Signup
                   </Link>

@@ -64,7 +64,7 @@ const TaskCard = ({ list, setLists }) => {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="task-container"
+          className="task-container  shadow "
         >
           {list.tasks?.map((task, index) => (
             <Draggable

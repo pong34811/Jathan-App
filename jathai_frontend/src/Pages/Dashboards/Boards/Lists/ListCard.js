@@ -48,7 +48,7 @@ const ListCard = ({ list, index, setLists }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="list-card-container"
+          className="list-card-container shadow "
         >
           {isEditing ? (
             <div className="list-edit">

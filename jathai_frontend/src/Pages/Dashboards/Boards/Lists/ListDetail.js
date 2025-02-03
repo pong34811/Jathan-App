@@ -6,13 +6,17 @@ import { FiPlus } from "react-icons/fi";
 import ListCard from "./ListCard";
 import { URL_AUTH } from "../../../../Apis/ConfigApis";
 import "./ListDetail.css";
-
+import useBoards from "../hooks/useBoards";
 
 const ListView = () => {
-  const { boardId: boardId } = useParams();
+  const { boardId } = useParams();
   const [lists, setLists] = useState([]);
   const [isAddingList, setIsAddingList] = useState(false);
   const [listTitle, setListTitle] = useState("");
+  const { boards, loading } = useBoards(); // ใช้ hook เพื่อดึงข้อมูล boards
+
+  // ดึง board ตาม boardId
+  const board = boards.find((b) => b.id === parseInt(boardId));
 
   const fetchLists = useCallback(async () => {
     try {
@@ -42,8 +46,8 @@ const ListView = () => {
     const movedTask =
       type === "task"
         ? updatedLists
-          .find((list) => list.id === +source.droppableId.split("-")[1])
-          ?.tasks.splice(source.index, 1)
+            .find((list) => list.id === +source.droppableId.split("-")[1])
+            ?.tasks.splice(source.index, 1)
         : null;
 
     if (type === "list" && source.index !== destination.index) {
@@ -129,9 +133,27 @@ const ListView = () => {
 
   return (
     <>
-      <main style={{height : "100vh"}} >
+      <main
+        className="d-flex flex-column align-items-start p-2 "
+        style={{ height: "100vh" }}
+      >
+        <div className="row g-3 mb-3">
+          <div className="col-lg-4 col-md-6 col-sm-12 w-100">
+            <div className="p-3 bg-white rounded shadow-sm border">
+              <h5 className="text-primary text-center fw-bold">
+              📌 Current Board: {loading ? "Loading..." : board ? board.title : "Board not found"}
+              </h5>
+            </div>
+          </div>
+        </div>
+
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="lists" direction="horizontal" type="list" key="lists">
+          <Droppable
+            droppableId="lists"
+            direction="horizontal"
+            type="list"
+            key="lists"
+          >
             {(provided) => (
               <div
                 ref={provided.innerRef}
