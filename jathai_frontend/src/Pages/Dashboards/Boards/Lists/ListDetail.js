@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { FiPlus } from "react-icons/fi";
 import ListCard from "./ListCard";
 import { URL_AUTH } from "../../../../Apis/ConfigApis";
 import "./ListDetail.css";
 import useBoards from "../hooks/useBoards";
 
-const ListView = () => {
+const ListDetail = () => {
   const { boardId } = useParams();
   const [lists, setLists] = useState([]);
   const [isAddingList, setIsAddingList] = useState(false);
@@ -207,4 +207,4 @@ const ListView = () => {
   );
 };
 
-export default ListView;
+export default ListDetail;

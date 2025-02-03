@@ -1,5 +1,5 @@
 import React from 'react'
-import ListView from "./ListDetail";
+import ListDetail from "./ListDetail";
 import SidebarList from "./SidebarList";
 function ListPages() {
   return (
@@ -11,7 +11,7 @@ function ListPages() {
 
             {/* Main Content */}
             <div className="col-10 bg-light">
-                <ListView />
+                <ListDetail />
             </div>
         </div>
   )

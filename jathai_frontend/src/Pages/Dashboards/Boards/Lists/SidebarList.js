@@ -34,11 +34,11 @@ function SidebarList() {
             boards.map((board) => (
               <li className="nav-item" key={board.id}>
                 <Link
-                  to={`/board/${board.id}`}
+                  to={`/lists/${board.id}`}
                   className={`nav-link d-flex align-items-center text-white px-3 py-2 
                                         ${
                                           location.pathname ===
-                                          `/board/${board.id}`
+                                          `/lists/${board.id}`
                                             ? "active bg-primary"
                                             : "hover-bg-light"
                                         }`}

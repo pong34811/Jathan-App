@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { FiPlus, FiTrash2, FiEdit } from "react-icons/fi";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";

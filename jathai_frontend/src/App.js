@@ -12,7 +12,7 @@ import "./css/main.css";
 import { Provider } from "react-redux";
 import Store from "./Store";
 import Boards from "./Pages/Dashboards/Pages";
-import ListPage from "./Pages/Dashboards/Boards/Lists/ListPages";
+import ListPages from "./Pages/Dashboards/Boards/Lists/ListPages";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
           <Route path="/dashboard" element={<Layout><Boards /></Layout>} />
 
           {/* Route สำหรับ /list โดยไม่ใช้ Layout */}
-          <Route path="/board/:boardId" element={<ListPage />} />
+          <Route path="/lists/:boardId" element={<ListPages />} />
         </Routes>
       </Router>
     </Provider>

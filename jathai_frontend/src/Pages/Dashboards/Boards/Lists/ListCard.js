@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from "@hello-pangea/dnd";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import TaskCard from "../Tasks/TaskCard";
 import axios from "axios";

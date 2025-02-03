@@ -50,7 +50,7 @@ function Boards({ id }) {
       }
 
       // หลังจากที่อัปเดตข้อมูลเสร็จแล้ว เราจะเปลี่ยนเส้นทางไปที่ Board
-      navigate(`/board/${boardId}`);
+      navigate(`/lists/${boardId}`);
     } catch (error) {
       console.error("Error during join board:", error);
     }
