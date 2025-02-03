@@ -13,51 +13,7 @@ function Boards() {
   const [editBoard, setEditBoard] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const { boards, loading } = useBoards(); // ใช้ Custom Hook
-
-
-  const handleDeleteBoard = async (id) => {
-    loading(true);
-    try {
-      const token = localStorage.getItem("access");
-      if (!token) {
-        console.error("Access token not found");
-        return;
-      }
-
-      const response = await fetch(`${URL_AUTH.BoardAPI}${id}/`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-      }
-
-      boards((prev) => prev.filter((board) => board.id !== id));
-      setConfirmDeleteId(null);
-    } catch (error) {
-      console.error("Failed to delete board:", error);
-    } finally {
-      loading(false);
-    }
-  };
-
-
-  const handleSaveBoard = (newBoard) => {
-    boards((prev) => [...prev, newBoard]);
-  };
-
-  const handleEditBoard = (updatedTitle) => {
-    loading((prev) =>
-      prev.map((board) =>
-        board.id === editBoard ? { ...board, title: updatedTitle } : board
-      )
-    );
-    setEditBoard(null);
-  };
+ 
 
   return (
     <div>
@@ -136,7 +92,7 @@ function Boards() {
 
       {/* Modals */}
       <CreateModal id="createBoardModal" />
-      <EditModal id="editModal" boardId={editBoard} />
+      <EditModal id="editModal" boardId={editBoard} onSave={setEditBoard}  />
       <DeleteModal id="deleteModal" boardId={confirmDeleteId} />
     </div>
 
