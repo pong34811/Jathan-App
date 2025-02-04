@@ -3,10 +3,11 @@ import { URL_AUTH } from "../../../../Apis/ConfigApis";
 
 const EditModal = ({ id, boardId, onSave }) => {
   const [newTitle, setNewTitle] = useState("");
+  const [details, setDetails] = useState(""); // เพิ่ม state สำหรับ details
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchBoardTitle = async () => {
+    const fetchBoardData = async () => {
       if (!boardId) return;
 
       setLoading(true);
@@ -28,15 +29,16 @@ const EditModal = ({ id, boardId, onSave }) => {
         }
 
         const data = await response.json();
-        setNewTitle(data.title); // ตั้งค่า title จากข้อมูลที่ดึงมา
+        setNewTitle(data.title); 
+        setDetails(data.details || ""); // กำหนดค่า details (ถ้าไม่มีให้เป็นค่าว่าง)
       } catch (error) {
-        console.error("Error fetching board title:", error);
+        console.error("Error fetching board data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBoardTitle();
+    fetchBoardData();
   }, [boardId]);
 
   const handleSave = async () => {
@@ -59,7 +61,7 @@ const EditModal = ({ id, boardId, onSave }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: newTitle }),
+        body: JSON.stringify({ title: newTitle, details: details }), // ส่งค่า details ไปด้วย
       });
 
       if (!response.ok) {
@@ -68,9 +70,9 @@ const EditModal = ({ id, boardId, onSave }) => {
 
       const data = await response.json();
       console.log("Board updated:", data);
-      onSave(newTitle); // ส่งค่าใหม่กลับไปยัง parent component
+      onSave(newTitle, details); // ส่งค่ากลับไปยัง parent component
 
-      window.location.reload(); 
+      window.location.reload();
 
     } catch (error) {
       console.error("Error updating board:", error);
@@ -88,10 +90,18 @@ const EditModal = ({ id, boardId, onSave }) => {
             <button className="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div className="modal-body">
+            <label className="form-label">Title</label>
             <input
               className="form-control"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
+              disabled={loading}
+            />
+            <label className="form-label mt-2">Details</label>
+            <input
+              className="form-control"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
               disabled={loading}
             />
           </div>
@@ -99,7 +109,12 @@ const EditModal = ({ id, boardId, onSave }) => {
             <button className="btn btn-secondary" data-bs-dismiss="modal">
               Cancel
             </button>
-            <button className="btn btn-primary" onClick={handleSave} disabled={loading} data-bs-dismiss="modal">
+            <button
+              className="btn btn-primary"
+              onClick={handleSave}
+              disabled={loading}
+              data-bs-dismiss="modal"
+            >
               {loading ? "Saving..." : "Save"}
             </button>
           </div>
