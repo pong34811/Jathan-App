@@ -7,7 +7,7 @@ class BoardSerializer(serializers.ModelSerializer):
     task_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Board
-        fields = ['id', 'title','list_count', 'task_count',   'created_at', 'updated_at', 'user', 'created_by', 'updated_by']
+        fields = ['id', 'title','details','is_star','list_count', 'task_count', 'created_at', 'updated_at', 'user', 'created_by', 'updated_by']
 
 class TaskSerializer(serializers.ModelSerializer):
     list = serializers.PrimaryKeyRelatedField(queryset=List.objects.all())

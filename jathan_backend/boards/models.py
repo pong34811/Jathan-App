@@ -4,11 +4,14 @@ from framework.models import BaseModel  # Import BaseModel
 
 class Board(BaseModel):  # Use BaseModel
     title = models.CharField(max_length=255)
+    details = models.CharField(max_length=255, blank=True, null=True)  # ทำให้เป็น optional field
+    is_star = models.BooleanField(default=False) 
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
         related_name='boards'
     )
+    
 
     def __str__(self):
         return self.title
