@@ -15,7 +15,7 @@ class BoardViewSet(viewsets.ModelViewSet):
     )
     serializer_class = BoardSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['user']
+    filterset_fields = ['user','is_star']
     search_fields = ['title']
 
     def perform_create(self, serializer):

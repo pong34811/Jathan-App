@@ -61,8 +61,8 @@ const ListCard = ({ list, index, setLists }) => {
               <button onClick={updateList}>Save</button>
             </div>
           ) : (
-            <div className="list-header">
-              <div className="list-header-title">
+            <div className="list-header" >
+              <div className="list-header-title" onClick={() => setIsEditing(true)} >
                 <p>{list.title}</p>
               </div>
               <div>
