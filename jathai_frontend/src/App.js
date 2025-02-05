@@ -21,8 +21,8 @@ function App() {
         <Routes>
           {/* Routes ที่มี Layout */}
           <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="login" element={<Layout><Login /></Layout>} />
-          <Route path="signup" element={<Layout><Signup /></Layout>} />
+          <Route path="login/" element={<Layout><Login /></Layout>} />
+          <Route path="signup/" element={<Layout><Signup /></Layout>} />
           <Route path="change/password/" element={<Layout><ChangePassword /></Layout>} />
           <Route path="reset/password/" element={<Layout><ResetPassword /></Layout>} />
           <Route path="dj-rest-auth/registration/account-confirm-email/:key/" element={<Layout><EmailVerification /></Layout>} />

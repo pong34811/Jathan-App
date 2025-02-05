@@ -139,10 +139,14 @@ export const logout = () => async dispatch => {
         dispatch ({
             type: TYPE.LOGOUT
         });
+        window.location.replace(window.location.href); // Reload the page to ensure redirection
+
     } catch (err) {
         dispatch ({
             type: TYPE.LOGOUT
         });
+        window.location.replace(window.location.href); // Reload the page to ensure redirection
+
     }
 }
 

@@ -11,7 +11,10 @@ import DeleteModal from "./ModalsBoards/DeleteModal";
 import useBoards from "./hooks/useBoards";
 import { URL_AUTH } from "../../../Apis/ConfigApis";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { useNavigate } from "react-router-dom"; // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
+import { useNavigate  } from "react-router-dom"; // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
+import { Navigate } from "react-router-dom";
+import { connect } from "react-redux";
+
 import BoardWorkspace from "./BoardCard/BoardWorkspace";
 function Boards({ id }) {
   const [editBoard, setEditBoard] = useState(null);
@@ -21,6 +24,13 @@ function Boards({ id }) {
   const { boards, nonStarredBoards, loading } = useBoards(searchTerm);
   const [isStarred, setIsStarred] = useState({}); // ใช้อ็อบเจ็กต์เก็บสถานะของแต่ละ board
 
+  useEffect(() => {
+    // Check if the access token exists
+    const token = localStorage.getItem("access");
+    if (!token) {
+      navigate("/login/"); // Redirect to login page if no token found
+    }
+  }, [navigate]);
 
   const handleSave = (newBoard) => {
     console.log("New board created:", newBoard);
@@ -30,6 +40,8 @@ function Boards({ id }) {
   const handleJoinBoard = async (boardId) => {
     const token = localStorage.getItem("access");
     if (!token) {
+      navigate("/login/");
+
       console.error("Access token not found");
       return;
     }
@@ -111,11 +123,31 @@ function Boards({ id }) {
     setIsStarred(starredMap);
   }, [boards]); // โหลดใหม่เมื่อ boards เปลี่ยนแปลง
 
-  const starredBoards = boards.filter((board) => board.is_star);
 
   return (
+
     <div>
-      {starredBoards.length > 0 && (
+      <div className="d-flex justify-content-end gap-2">
+        {/* Search Input */}
+        <input
+          type="text"
+          className="form-control"
+          placeholder="🔍 ค้นหา Board..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // ✅ ตรวจสอบว่าค่าถูกเปลี่ยน
+          style={{ width: "40vh" }}
+        />
+        <button
+          className="btn btn-primary d-flex align-items-center gap-2"
+          data-bs-toggle="modal"
+          data-bs-target="#createBoardModal"
+          disabled={loading}
+        >
+          <IoAddCircleOutline size={20} /> <span>Create Board</span>
+        </button>
+      </div>
+
+      {nonStarredBoards.length > 0 && (
         <>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h3 className="fw-bold text-primary">
@@ -124,7 +156,7 @@ function Boards({ id }) {
           </div>
 
           <div className="row g-3 mb-4">
-            {starredBoards.map((board) => (
+            {nonStarredBoards.map((board) => (
               <BoardWorkspace
                 key={board.id}
                 {...board}
@@ -139,31 +171,10 @@ function Boards({ id }) {
         </>
       )}
 
-
-
       {/* Header Section */}
       <div className="d-flex justify-content-between align-items-center mb-4" >
         <h3 className="fw-bold text-primary">📋 YOUR WORKSPACES</h3>
-        <div className="d-flex gap-2" >
-          {/* Search Input */}
-          <input
-            type="text"
-            className="form-control"
-            placeholder="🔍 ค้นหา Board..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // ✅ ตรวจสอบว่าค่าถูกเปลี่ยน
-            style={{ width: "40vh" }}
-          />
-          <button
-            className="btn btn-primary d-flex align-items-center gap-2"
-            data-bs-toggle="modal"
-            data-bs-target="#createBoardModal"
-            disabled={loading}
 
-          >
-            <IoAddCircleOutline size={20} /> <span>Create Board</span>
-          </button>
-        </div>
       </div>
 
       {/* Board Cards */}
@@ -189,8 +200,6 @@ function Boards({ id }) {
         )}
       </div>
 
-
-
       {/* Modals */}
       <CreateModal id="createBoardModal" onSave={handleSave} />
       <EditModal id="editModal" boardId={editBoard} onSave={setEditBoard} />
@@ -199,4 +208,11 @@ function Boards({ id }) {
   );
 }
 
-export default Boards;
+const mapStateToProps = ( state ) => {
+  return {
+      isAuthenticated: state.AuthReducer.isAuthenticated
+  }
+}
+
+
+export default connect(mapStateToProps)(Boards);

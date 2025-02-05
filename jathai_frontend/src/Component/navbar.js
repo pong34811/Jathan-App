@@ -23,13 +23,14 @@ function navbar({ logout, isAuthenticated }) {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">
-                Home
-              </Link>
-            </li>
+
             {isAuthenticated ? (
               <>
+                <li className="nav-item">
+                  <Link className="nav-link active" to="/docs">
+                    Docs
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link
                     className="nav-link active"
@@ -37,7 +38,7 @@ function navbar({ logout, isAuthenticated }) {
                     to="/change/password"
                   >
                     Change Password
-                  </Link> 
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <span
@@ -52,6 +53,11 @@ function navbar({ logout, isAuthenticated }) {
               </>
             ) : (
               <>
+                <li className="nav-item">
+                  <Link className="nav-link active"  to="/">
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link
                     className="nav-link active"
@@ -79,10 +85,10 @@ function navbar({ logout, isAuthenticated }) {
   );
 }
 
-const mapStateToProps = ( state ) => {
-    return {
-        isAuthenticated: state.AuthReducer.isAuthenticated
-    }
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.AuthReducer.isAuthenticated
+  }
 }
 
 export default connect(mapStateToProps, { logout })(navbar)

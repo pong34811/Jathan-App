@@ -172,7 +172,7 @@ const ListDetail = () => {
                 {provided.placeholder}
 
                 {isAddingList ? (
-                  <div className="add-list-card">
+                  <div className="add-list-card" style={{height:"65px"}}>
                     <input
                       className="list-card-input"
                       value={listTitle}
@@ -180,11 +180,11 @@ const ListDetail = () => {
                       placeholder="Enter list title..."
                       autoFocus
                     />
-                    <button className="list-card-add" onClick={addList}>
+                    <button className="btn btn-primary me-2" onClick={addList}>
                       Save
                     </button>
                     <button
-                      className="list-card-cancel"
+                      className="btn btn-danger"
                       onClick={() => setIsAddingList(false)}
                     >
                       Cancel
