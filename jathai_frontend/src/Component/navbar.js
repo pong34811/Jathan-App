@@ -6,10 +6,13 @@ import { logout } from "../reducer/Actions";
 function navbar({ logout, isAuthenticated }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
-      <div className="container-fluid">
+      <div className="container-fluid d-flex justify-content-between">
+        {/* โลโก้ด้านซ้าย */}
         <Link className="navbar-brand" to="/">
           Jathan App
         </Link>
+
+        {/* Toggle Button สำหรับมือถือ */}
         <button
           className="navbar-toggler"
           type="button"
@@ -21,9 +24,10 @@ function navbar({ logout, isAuthenticated }) {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
 
+        {/* เมนูด้านขวา */}
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul className="navbar-nav">
             {isAuthenticated ? (
               <>
                 <li className="nav-item">
@@ -32,21 +36,12 @@ function navbar({ logout, isAuthenticated }) {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/change/password"
-                  >
+                  <Link className="nav-link active" to="/change/password">
                     Change Password
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <span
-                    className="nav-link active"
-                    aria-current="page"
-                    onClick={logout}
-                    id="logout"
-                  >
+                  <span className="nav-link active" onClick={logout} id="logout" style={{ cursor: "pointer" }}>
                     Logout
                   </span>
                 </li>
@@ -54,25 +49,17 @@ function navbar({ logout, isAuthenticated }) {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link active"  to="/">
+                  <Link className="nav-link active" to="/">
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/login"
-                  >
+                  <Link className="nav-link active" to="/login">
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/signup"
-                  >
+                  <Link className="nav-link active" to="/signup">
                     Signup
                   </Link>
                 </li>
