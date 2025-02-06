@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../reducer/Actions";
+import { FcGoogle } from "react-icons/fc";
 
 function Login({ login, isAuthenticated }) {
   const [formData, setFormData] = useState({
@@ -31,13 +32,12 @@ function Login({ login, isAuthenticated }) {
   }
 
   return (
-    <div className="main-box">
+    <div className="container d-flex justify-content-center align-items-center" style={{ marginTop: "180px" }}>
+    <div className="card shadow-lg p-4" style={{ width: '100%', maxWidth: '400px' }}>
       <h2 className="text-center mb-4">Login</h2>
       <form className="mb-3" onSubmit={handlingSubmit}>
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
+          <label htmlFor="email" className="form-label">Email address</label>
           <input
             name="email"
             value={email}
@@ -49,9 +49,7 @@ function Login({ login, isAuthenticated }) {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
+          <label htmlFor="password" className="form-label">Password</label>
           <input
             name="password"
             value={password}
@@ -68,23 +66,23 @@ function Login({ login, isAuthenticated }) {
           </button>
         </div>
         <div className="d-grid gap-2 mt-2">
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={reachGoogle}
-          >
-            Login With Google
+          <button className="btn btn-outline-danger" type="button" onClick={reachGoogle}>
+            <FcGoogle className="me-2" />Login With Google
           </button>
         </div>
       </form>
-      <p>
-        Forgot your password?{" "}
-        <Link to={"../reset/password/"}>Reset Password</Link>
-      </p>
-      <p>
-        Don't have any account? <Link to={"../signup/"}>Signup</Link>
-      </p>
+      <div className="text-center mt-3">
+        <p>
+          Forgot your password?{" "}
+          <Link to={"../reset/password/"}>Reset Password</Link>
+        </p>
+        <p>
+          Don't have an account? <Link to={"../signup/"}>Signup</Link>
+        </p>
+      </div>
     </div>
+  </div>
+  
   );
 }
 
