@@ -5,8 +5,7 @@
   }
   
   .navbar-brand img {
-    width: 35px; /* ปรับขนาดโลโก้ให้เล็กลง */
-    height: 35px;
+    width: 5%; /* ปรับขนาดโลโก้ให้เล็กลง */
   }
   
   .navbar-nav .nav-link {

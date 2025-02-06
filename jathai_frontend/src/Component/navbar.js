@@ -11,7 +11,7 @@ function navbar({ logout, isAuthenticated }) {
   <div className="container-fluid d-flex justify-content-between">
     {/* โลโก้ด้านซ้าย */}
     <Link className="navbar-brand" to="/">
-      <img src="/logo.webp" className="img-fluid rounded-top" alt="" />
+      <img src="/logo.jpg" className="img-fluid rounded-top" alt="" />
     </Link>
 
     {/* Toggle Button สำหรับมือถือ */}
