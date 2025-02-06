@@ -10,10 +10,10 @@ function Welcome() {
 >
   <div className="container text-center py-5 text-white">
     <h1 className="display-4 fw-bold mb-3" style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.3)" }}>
-      ยินดีต้อนรับสู่ <strong>Sabai App</strong>
+      ยินดีต้อนรับสู่ <strong>Jathai App</strong>
     </h1>
     <p className="col-lg-8 mx-auto fs-5" style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.2)" }}>
-      ปฏิวัติการจัดการงานของคุณด้วย <strong>Sabai App</strong> ที่ช่วยให้ทีมของคุณทำงานได้อย่างมีประสิทธิภาพ
+      ปฏิวัติการจัดการงานของคุณด้วย <strong>Jathai App</strong> ที่ช่วยให้ทีมของคุณทำงานได้อย่างมีประสิทธิภาพ
       ด้วยอินเตอร์เฟซที่ใช้งานง่ายและดีไซน์ที่ทันสมัย
     </p>
     <button

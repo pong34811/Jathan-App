@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import Store from "./Store";
 import Boards from "./Pages/Dashboards/Pages";
 import ListPages from "./Pages/Dashboards/Boards/Lists/ListPages";
+import Docs from "./Pages/Docs";
 
 function App() {
   return (
@@ -28,9 +29,10 @@ function App() {
           <Route path="dj-rest-auth/registration/account-confirm-email/:key/" element={<Layout><EmailVerification /></Layout>} />
           <Route path="reset/password/confirm/:uid/:token" element={<Layout><ResetPasswordConfirm /></Layout>} />
           <Route path="/dashboard" element={<Layout><Boards /></Layout>} />
-
+          <Route path="docs/" element={<Layout><Docs /></Layout>} />
           {/* Route สำหรับ /list โดยไม่ใช้ Layout */}
           <Route path="/lists/:boardId" element={<ListPages />} />
+          
         </Routes>
       </Router>
     </Provider>

@@ -9,7 +9,7 @@ import { IoLogoReact } from "react-icons/io5";
 import { BiLogoDjango } from "react-icons/bi";
 import { DiSqllite } from "react-icons/di";
 import { BsBootstrap } from "react-icons/bs"; // เพิ่ม Icon สำหรับ Bootstrap
-import { FaFontAwesome } from "react-icons/fa"; // เพิ่ม Icon สำหรับ FontAwesome
+import "../../../css/Technology.css"
 
 function Technology() {
   return (
@@ -20,7 +20,7 @@ function Technology() {
 
       <div className="row row-cols-2 row-cols-md-4 g-4">
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-primary">
               <IoLogoReact />
             </span>
@@ -28,7 +28,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-danger">
               <IoLogoHtml5 />
             </span>
@@ -36,7 +36,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-primary">
               <IoLogoCss3 />
             </span>
@@ -44,7 +44,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-success">
               <IoLogoNodejs />
             </span>
@@ -52,7 +52,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-info">
               <IoLogoPython />
             </span>
@@ -60,7 +60,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-success">
               <BiLogoDjango />
             </span>
@@ -68,7 +68,7 @@ function Technology() {
           </div>
         </div>
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-muted">
               <DiSqllite />
             </span>
@@ -78,7 +78,7 @@ function Technology() {
 
         {/* เพิ่ม Bootstrap */}
         <div className="col">
-          <div className="card border-0 shadow-lg text-center p-4">
+          <div className="card border-0 shadow-lg text-center p-4 tech-card">
             <span className="display-4 mb-3 text-info">
               <BsBootstrap />
             </span>

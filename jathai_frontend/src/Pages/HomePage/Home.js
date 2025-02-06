@@ -4,6 +4,11 @@ import Welcome from "./ContenHome/Welcome";
 import About from "./ContenHome/About";
 import Service from "./ContenHome/Service";
 import Technology from "./ContenHome/Technology";
+import TimeLine from "./ContenHome/TimeLine";
+
+import Footer from "../../Component/Footer";
+
+
 function Home({ isAuthenticated }) {
   // ถ้า isAuthenticated เป็น true, redirect ไปยัง /dashboard
   if (isAuthenticated) {
@@ -18,6 +23,10 @@ function Home({ isAuthenticated }) {
         <Service />
       </div>
       <Technology />
+      <div className="container-fluid bg-light">
+        <TimeLine />
+      </div>
+      <Footer />
     </>
   );
 }
