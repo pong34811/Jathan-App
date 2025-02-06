@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // import Link
 
 function About() {
   return (
@@ -20,7 +21,9 @@ function About() {
               เพิ่มรายละเอียด และติดตามความคืบหน้าได้ในที่เดียว
               ด้วยอินเตอร์เฟซที่ได้แรงบันดาลใจจาก Trello
             </p>
-            <button className="btn btn-primary mt-3">เริ่มต้นใช้งาน</button>
+            <Link to="/login/" className="btn btn-primary mt-3">
+              เริ่มต้นใช้งาน
+            </Link>
           </div>
           <div className="col-md-6 text-center">
             <img

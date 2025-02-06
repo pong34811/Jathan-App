@@ -32,7 +32,6 @@ function App() {
           <Route path="docs/" element={<Layout><Docs /></Layout>} />
           {/* Route สำหรับ /list โดยไม่ใช้ Layout */}
           <Route path="/lists/:boardId" element={<ListPages />} />
-          
         </Routes>
       </Router>
     </Provider>
