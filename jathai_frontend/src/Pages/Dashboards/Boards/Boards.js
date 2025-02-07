@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IoAddCircleOutline, IoFolderOpen } from "react-icons/io5";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { FaRegStar } from "react-icons/fa";
 import CreateModal from "./ModalsBoards/CreateModal";
 import EditModal from "./ModalsBoards/EditModal";
