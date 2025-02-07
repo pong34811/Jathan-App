@@ -32,7 +32,7 @@ function Login({ login, isAuthenticated }) {
   }
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ marginTop: "180px" }}>
+    <div className="container d-flex justify-content-center align-items-center" style={{ marginTop: "100px" }}>
     <div className="card shadow-lg p-4" style={{ width: '100%', maxWidth: '400px' }}>
       <h2 className="text-center mb-4">Login</h2>
       <form className="mb-3" onSubmit={handlingSubmit}>
