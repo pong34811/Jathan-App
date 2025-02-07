@@ -21,7 +21,7 @@ function Login({ login, isAuthenticated }) {
 
   const reachGoogle = () => {
     const clientID = "967588498985-mg47pjtlhlbpimjnqs5ss7sa50p9agnh.apps.googleusercontent.com";
-    const callBackURI = "http://localhost:3000/";
+    const callBackURI = "https://janhai.space/";
     window.location.replace(
       `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${callBackURI}&prompt=consent&response_type=code&client_id=${clientID}&scope=openid%20email%20profile&access_type=offline`
     );
