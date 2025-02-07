@@ -16,7 +16,7 @@ export const login = ( email, password ) => async dispatch => {
     };
     const body = JSON.stringify({ email, password })
     try {
-        const res = await axios.post("http://localhost:8000/dj-rest-auth/login/", body, config)
+        const res = await axios.post("https://api.janhai.space/dj-rest-auth/login/", body, config)
         dispatch ({
             type: TYPE.LOGIN_SUCCESS,
             payload: res.data
@@ -37,7 +37,7 @@ export const verify = () => async dispatch => {
         };
         const body = JSON.stringify({ "token": localStorage.getItem('access') });
         try {
-            await axios.post("http://localhost:8000/dj-rest-auth/token/verify/", body, config);
+            await axios.post("https://api.janhai.space/dj-rest-auth/token/verify/", body, config);
             dispatch ({
                 type: TYPE.VERIFY_SUCCESS
             });
@@ -63,7 +63,7 @@ export const getUser = () => async dispatch => {
             }
         };
         try {
-            const res = await axios.get("http://localhost:8000/dj-rest-auth/user/", config);
+            const res = await axios.get("https://api.janhai.space/dj-rest-auth/user/", config);
             dispatch ({
                 type: TYPE.GET_USER_SUCCESS,
                 payload: res.data
@@ -88,7 +88,7 @@ export const refresh = () => async dispatch => {
             }
         };
         try {
-            const res = await axios.post("http://localhost:8000/dj-rest-auth/token/refresh/", config);
+            const res = await axios.post("https://api.janhai.space/dj-rest-auth/token/refresh/", config);
             console.log(res.data);
             dispatch ({
                 type: TYPE.REFRESH_SUCCESS,
@@ -117,7 +117,7 @@ export const changePassword = ( new_password1, new_password2, old_password ) => 
     };
     const body = JSON.stringify({ new_password1, new_password2, old_password });
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/password/change/", body, config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/password/change/", body, config);
         dispatch ({
             type: TYPE.CHANGE_PASSWORD_SUCCESS
         });
@@ -135,7 +135,7 @@ export const logout = () => async dispatch => {
         }
     };
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/logout/", config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/logout/", config);
         dispatch ({
             type: TYPE.LOGOUT
         });
@@ -158,7 +158,7 @@ export const signup = ( email, first_name, last_name, password1, password2 ) => 
     };
     const body = JSON.stringify({ email, first_name, last_name, password1, password2 });
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/registration/", body, config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/registration/", body, config);
         dispatch ({
             type: TYPE.SIGNUP_SUCCESS
         });
@@ -177,7 +177,7 @@ export const emailVerification = ( key ) => async dispatch => {
     };
     const body = JSON.stringify({ key });
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/registration/verify-email/", body, config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/registration/verify-email/", body, config);
         dispatch ({
             type: TYPE.ACTIVATE_ACCTOUNT_SUCCESS
         });
@@ -196,7 +196,7 @@ export const resetPassword = ( email ) => async dispatch => {
     };
     const body = JSON.stringify({ email });
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/password/reset/", body, config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/password/reset/", body, config);
         dispatch ({
             type: TYPE.RESET_SUCCESS
         });
@@ -215,7 +215,7 @@ export const resetPasswordConfirm = ( uid, token, new_password1, new_password2 )
     };
     const body = JSON.stringify({ uid, token, new_password1, new_password2 });
     try {
-        await axios.post("http://localhost:8000/dj-rest-auth/password/reset/confirm/", body, config);
+        await axios.post("https://api.janhai.space/dj-rest-auth/password/reset/confirm/", body, config);
         dispatch ({
             type: TYPE.SET_SUCCESS
         });
@@ -235,7 +235,7 @@ export const googleLogin = ( code ) => async dispatch => {
         };
         const body = JSON.stringify({ code })
         try {
-            const res = await axios.post("http://localhost:8000/dj-rest-auth/google/", body, config)
+            const res = await axios.post("https://api.janhai.space/dj-rest-auth/google/", body, config)
             dispatch ({
                 type: TYPE.LOGIN_SUCCESS,
                 payload: res.data

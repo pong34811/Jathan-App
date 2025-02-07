@@ -1,9 +1,8 @@
 export const URL_AUTH = {
-    BoardAPI: "http://localhost:8000/api/boards/",
-    ListsAPI: "http://localhost:8000/api/lists/",
-    ReorderListsAPI: "http://localhost:8000/api/lists/reorder/",
-    TasksAPI: "http://localhost:8000/api/tasks/",
-    PasswordResetAPI: "http://localhost:8000/api/password_reset/",
-    PasswordResetConfirmAPI: "http://localhost:8000/api/password_reset/confirm/",
-    UsersAPI: "http://localhost:8000/dj-rest-auth/user/", // เพิ่ม URL สำหรับ Users
+    BoardAPI: "https://api.janhai.space/api/boards/",
+    ListsAPI: "https://api.janhai.space/api/lists/",
+    ReorderListsAPI: "https://api.janhai.space/api/lists/reorder/",
+    TasksAPI: "https://api.janhai.space/api/tasks/",
+
+    UsersAPI: "https://api.janhai.space/dj-rest-auth/user/", // เพิ่ม URL สำหรับ Users
 };
