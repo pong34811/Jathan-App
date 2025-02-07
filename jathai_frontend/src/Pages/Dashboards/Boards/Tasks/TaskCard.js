@@ -184,10 +184,10 @@ const TaskCard = ({ list, setLists }) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className="task-item card mb-2 p-3"
-                    onClick={() => openEditModal(task)}
                   >
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className="badge bg-primary rounded-pill fs-6" >{task.title}</span>
+                      <span className="badge bg-primary rounded-pill fs-6" onClick={() => openEditModal(task)}
+                      >{task.title}</span>
                       <div>
                         <button
                           type="button"
