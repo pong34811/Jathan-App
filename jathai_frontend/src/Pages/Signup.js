@@ -27,7 +27,7 @@ function Signup({ signup }) {
   return (
     <div
       className="container d-flex justify-content-center align-items-center "
-      style={{ marginTop: "100px" }}
+      style={{ marginTop: "50px" }}
     >
       <div
         className="card shadow-lg p-4"

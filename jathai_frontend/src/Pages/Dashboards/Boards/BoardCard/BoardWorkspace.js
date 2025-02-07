@@ -1,4 +1,4 @@
-// BoardCard.js
+// C:\Users\admin\Desktop\git\Jathan-App\jathai_frontend\src\Pages\Dashboards\Boards\BoardCard\BoardWorkspace.js
 import React from 'react';
 import { IoFolderOpen } from 'react-icons/io5';
 import { FaEdit, FaStar, FaRegStar, FaList, FaTasks, FaCalendarAlt, FaTrash } from 'react-icons/fa';
@@ -48,8 +48,7 @@ const BoardWorkspace = ({
               <FaList className="me-2" /> Lists: {list_count}
             </div>
             <div className="badge bg-success-subtle text-dark p-2">
-              <FaTasks className="me-2" />
-              Tasks: {task_count}
+              <FaTasks className="me-2" /> Tasks: {task_count}
             </div>
           </div>
           <div className="d-flex justify-content-between align-items-center mt-3">

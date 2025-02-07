@@ -196,14 +196,13 @@ function Boards({ id }) {
               setConfirmDeleteId={setConfirmDeleteId}
               handleJoinBoard={handleJoinBoard}
             />
-          ))
-        )}
+          )))}
       </div>
 
       {/* Modals */}
       <CreateModal id="createBoardModal" onSave={handleSave} />
       <EditModal id="editModal" boardId={editBoard} onSave={setEditBoard} />
-      <DeleteModal id="deleteModal" boardId={confirmDeleteId} />
+      <DeleteModal id="deleteModal" boardId={confirmDeleteId} onDelete={setConfirmDeleteId} />
     </div>
   );
 }

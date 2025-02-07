@@ -134,7 +134,7 @@ const ListDetail = () => {
   return (
     <>
       <main
-        className="d-flex flex-column align-items-start p-2 "
+        className="d-flex flex-column align-items-start p-2 bg-light"
         style={{ height: "100vh" }}
       >
         <div className="row g-3 mb-3">
@@ -159,7 +159,7 @@ const ListDetail = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 id="lists-container"
-                className="lists-container"
+                className="lists-container bg-light"
               >
                 {lists.map((list, index) => (
                   <ListCard
