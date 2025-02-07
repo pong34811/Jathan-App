@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import { IoAddCircleOutline, IoFolderOpen } from "react-icons/io5";
-import { FaList, FaTasks, FaCalendarAlt } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
-import { FaStar } from "react-icons/fa";
-import axios from "axios";
 import CreateModal from "./ModalsBoards/CreateModal";
 import EditModal from "./ModalsBoards/EditModal";
 import DeleteModal from "./ModalsBoards/DeleteModal";
 import useBoards from "./hooks/useBoards";
 import { URL_AUTH } from "../../../Apis/ConfigApis";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate  } from "react-router-dom"; // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
-import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 import BoardWorkspace from "./BoardCard/BoardWorkspace";
