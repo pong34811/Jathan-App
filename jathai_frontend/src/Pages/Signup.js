@@ -22,7 +22,7 @@ function Signup({ signup }) {
     setStatus(true);
   };
   if (status) {
-    return <Navigate to={"../"}></Navigate>;
+    return <Navigate to={"/signup/"}></Navigate>;
   }
   return (
     <div
