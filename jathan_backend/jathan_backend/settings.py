@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # local app
     "accounts",
     "boards",
+    "notify",
     # django_filters
     'django_filters',
 ]
@@ -192,3 +193,11 @@ EMAIL_HOST_USER = 'pong34811@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbhd jkxr mwgp xvun'
 
 AUTH_USER_MODEL = "accounts.CustomUserModel"
+
+
+LINE_NOTIFY_TOKEN = "p+LZXvFOhO3OXsXHhYul1Yjj707zzteP6TXVPBXWiy2Qz1kP3z5udHzn+xS6LX0+sJXd4EOcVKdqdDfqqV3vtz4NMGeMfqZspkzxm0GB52vILXzbtmv1apBjqQvlNYcZDQd7VgtdlsmDHfij3BWdqwdB04t89/1O/w1cDnyilFU="
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+}
+

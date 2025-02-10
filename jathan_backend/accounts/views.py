@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from rest_framework.permissions import IsAuthenticated
+from .models import CustomUserModel
+from .serializers import CustomUserSerializer
+from rest_framework.generics import RetrieveUpdateAPIView
+
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -17,3 +22,14 @@ def email_confirmation(request, key):
 
 def reset_password_confirm(request, uid, token):
     return redirect(f"http://localhost:3000/reset/password/confirm/{uid}/{token}")
+
+
+
+class UserDetailView(RetrieveUpdateAPIView):
+    queryset = CustomUserModel.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated]  # ป้องกันการเข้าถึงข้อมูลของผู้ใช้อื่น
+
+    def get_object(self):
+        """Return the user object for the currently authenticated user"""
+        return self.request.user
