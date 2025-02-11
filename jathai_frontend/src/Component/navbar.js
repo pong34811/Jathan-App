@@ -43,6 +43,11 @@ function navbar({ logout, isAuthenticated }) {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link text-white fw-bold d-flex align-items-center" to="/settings">
+                    <FaBook className="me-1" /> Settings
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link text-white d-flex align-items-center" to="/change/password">
                     <FaLock className="me-1" /> Change Password
                   </Link>

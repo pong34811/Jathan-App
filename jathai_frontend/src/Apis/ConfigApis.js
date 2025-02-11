@@ -11,4 +11,6 @@ export const URL_AUTH = {
   ReorderListsAPI: "http://localhost:8000.space/api/lists/reorder/",
   TasksAPI: "http://localhost:8000/api/tasks/",
   UsersAPI: "http://localhost:8000/dj-rest-auth/user/", // เพิ่ม URL สำหรับ Users
+  UserDetailAPI : "http://localhost:8000/user/"
 };
+  

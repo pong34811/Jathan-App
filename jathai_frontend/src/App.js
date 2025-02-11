@@ -14,6 +14,7 @@ import Store from "./Store";
 import Boards from "./Pages/Dashboards/Pages";
 import ListPages from "./Pages/Dashboards/Boards/Lists/ListPages";
 import Docs from "./Pages/Docs";
+import Settings from "./Pages/Settings/Settings";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="reset/password/confirm/:uid/:token" element={<Layout><ResetPasswordConfirm /></Layout>} />
           <Route path="/dashboard" element={<Layout><Boards /></Layout>} />
           <Route path="docs/" element={<Layout><Docs /></Layout>} />
+          <Route path="settings/" element={<Layout><Settings /></Layout>} />
           {/* Route สำหรับ /list โดยไม่ใช้ Layout */}
           <Route path="/lists/:boardId" element={<ListPages />} />
         </Routes>

@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     # local app
     "accounts",
     "boards",
-    "notify",
     # django_filters
     'django_filters',
 ]
@@ -195,9 +194,9 @@ EMAIL_HOST_PASSWORD = 'dbhd jkxr mwgp xvun'
 AUTH_USER_MODEL = "accounts.CustomUserModel"
 
 
+# LINE API Configuration
+LINE_CLIENT_ID = '2006885737'
+LINE_CLIENT_SECRET = 'dc30f79157f0b0634979a873fddce4c5'
+LINE_REDIRECT_URI = 'http://localhost:3000/settings'
+
 LINE_NOTIFY_TOKEN = "p+LZXvFOhO3OXsXHhYul1Yjj707zzteP6TXVPBXWiy2Qz1kP3z5udHzn+xS6LX0+sJXd4EOcVKdqdDfqqV3vtz4NMGeMfqZspkzxm0GB52vILXzbtmv1apBjqQvlNYcZDQd7VgtdlsmDHfij3BWdqwdB04t89/1O/w1cDnyilFU="
-
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
-}
-

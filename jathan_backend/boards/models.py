@@ -55,7 +55,7 @@ class List(BaseModel):  # Use BaseModel
 class Task(BaseModel):
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name="tasks")
     title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)  # Can be a JSON string or plain text
     order = models.DecimalField(
         max_digits=30,
         decimal_places=15,
