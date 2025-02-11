@@ -53,11 +53,7 @@ const LineNotify = () => {
                 icon: <FaTasks className="me-2" />,
                 label: "Tasks",
               },
-              {
-                id: "lists",
-                icon: <FaClipboardList className="me-2" />,
-                label: "Lists",
-              },
+
             ].map((tab, index) => (
               <li className="nav-item" role="presentation" key={tab.id}>
                 <button
@@ -75,7 +71,7 @@ const LineNotify = () => {
           </ul>
 
           <div className="tab-content mt-3">
-            {["board", "task", "list"].map((category) => (
+            {["board", "task"].map((category) => (
               <div
                 key={category}
                 className={`tab-pane fade ${
