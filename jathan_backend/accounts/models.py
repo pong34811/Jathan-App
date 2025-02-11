@@ -8,7 +8,17 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("Email Address"), unique=True, max_length=255)
     first_name = models.CharField(_("First Name"), max_length=100)
     last_name = models.CharField(_("Last Name"), max_length=100, null=True, blank=True)
-    line_user_id = models.CharField(_("LINE User ID"), max_length=50, null=True, blank=True)  # ฟิลด์ใหม่
+    line_user_id = models.CharField(_("LINE User ID"), max_length=50, null=True, blank=True)
+
+    # ฟิลด์แจ้งเตือน
+    is_notify_create_board = models.BooleanField(default=True)
+    is_notify_update_board = models.BooleanField(default=True)
+    is_notify_delete_board = models.BooleanField(default=True)
+    
+    is_notify_create_task = models.BooleanField(default=True)
+    is_notify_update_task = models.BooleanField(default=True)
+    is_notify_delete_task = models.BooleanField(default=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -25,3 +35,4 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+

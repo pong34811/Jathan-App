@@ -7,22 +7,35 @@ from boards.models import Board, List, Task
 from .serializers import ListSerializer, BoardSerializer, TaskSerializer
 from rest_framework.filters import SearchFilter
 from django.db.models import Count
+from notifications.services import send_line_notify
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all().annotate(
-        list_count=Count('lists'),  # จำนวน List ที่เกี่ยวข้องกับ Board นี้
-        task_count=Count('lists__tasks')  # จำนวน Task ที่เกี่ยวข้องกับ List ใน Board นี้
+        list_count=Count('lists'),
+        task_count=Count('lists__tasks')
     )
     serializer_class = BoardSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['user','is_star']
+    filterset_fields = ['user', 'is_star']
     search_fields = ['title']
-
+    
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user, updated_by=self.request.user)
+        board = serializer.save(created_by=self.request.user)
+        if self.request.user.is_notify_create_board:  # ตรวจสอบฟิลด์แจ้งเตือน
+            send_line_notify(self.request.user, f"📌 Board '{board.title}' has been created!")
 
     def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+        board = serializer.save(updated_by=self.request.user)
+        if self.request.user.is_notify_update_board:  # ตรวจสอบฟิลด์แจ้งเตือน
+            send_line_notify(self.request.user, f"✏️ Board '{board.title}' has been updated!")
+
+    def perform_destroy(self, instance):
+        title = instance.title
+        if self.request.user.is_notify_delete_board:  # ตรวจสอบฟิลด์แจ้งเตือน
+            send_line_notify(self.request.user, f"🗑️ Board '{title}' has been deleted!")
+        instance.delete()
+
+
 
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.prefetch_related('tasks')
@@ -45,6 +58,13 @@ class TaskViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(list_id=list_id).order_by('order')
         return self.queryset.order_by('order')
 
+    def perform_create(self, serializer):
+        task = serializer.save(created_by=self.request.user, updated_by=self.request.user)
+        
+        # เช็คค่า is_notify_create_task ก่อนส่งการแจ้งเตือน
+        if self.request.user.is_notify_create_task:
+            send_line_notify(self.request.user, f"✅ Task '{task.title}' has been created!")
+
     def perform_update(self, serializer):
         task = self.get_object()
         if not task:
@@ -54,13 +74,22 @@ class TaskViewSet(viewsets.ModelViewSet):
         description = serializer.validated_data.get('description', '')
         if description:
             try:
-                json.loads(description)  # Check if it's a valid JSON format
+                json.loads(description)
             except ValueError:
                 raise ValidationError("Description must be a valid JSON format.")
 
         # Save the updated task
         serializer.save(updated_by=self.request.user)
+        
+        # เช็คค่า is_notify_update_task ก่อนส่งการแจ้งเตือน
+        if self.request.user.is_notify_update_task:
+            send_line_notify(self.request.user, f"✏️ Task '{task.title}' has been updated!")
 
-    def perform_create(self, serializer):
-        # Save created_by and updated_by when creating a new task
-        serializer.save(created_by=self.request.user, updated_by=self.request.user)
+    def perform_destroy(self, instance):
+        title = instance.title
+        
+        # เช็คค่า is_notify_delete_task ก่อนส่งการแจ้งเตือน
+        if self.request.user.is_notify_delete_task:
+            send_line_notify(self.request.user, f"🗑️ Task '{title}' has been deleted!")
+        
+        instance.delete()
