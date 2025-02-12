@@ -15,12 +15,13 @@ const TaskCard = ({ list, setLists }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [editorInstance, setEditorInstance] = useState(null);
-  const [taskColor, setTaskColor] = useState("#FFFFFF"); // state สำหรับเก็บสีของ task
+  const [taskColor, setTaskColor] = useState("#FFFFFF");
+  const [taskTags] = useState([]);
+  const [editTitle, setEditTitle] = useState(""); // เพิ่ม state ใหม่สำหรับจัดการ title ใน modal
+  const [newTag, setNewTag] = useState("");
 
-  // ref สำหรับ EditorJS holder
   const editorRef = useRef(null);
 
-  // Cleanup EditorJS instance เมื่อ component unmount หรือ modal ปิด
   useEffect(() => {
     return () => {
       if (editorInstance && typeof editorInstance.destroy === "function") {
@@ -29,10 +30,8 @@ const TaskCard = ({ list, setLists }) => {
     };
   }, [editorInstance]);
 
-  // เมื่อ modal เปิดและมี currentTask พร้อม holder element แล้ว สร้าง EditorJS instance ใหม่
   useEffect(() => {
     if (isEditModalOpen && currentTask && editorRef.current) {
-      // หากมี instance เก่าอยู่ ให้ทำลายก่อน
       if (editorInstance && typeof editorInstance.destroy === "function") {
         editorInstance.destroy();
         setEditorInstance(null);
@@ -50,26 +49,32 @@ const TaskCard = ({ list, setLists }) => {
         onReady: () => setEditorInstance(editor),
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditModalOpen, currentTask]);
 
-  // ฟังก์ชันเปิด modal สำหรับแก้ไข task
+  // อัปเดตค่า editTitle เมื่อ currentTask เปลี่ยน
+  useEffect(() => {
+    if (currentTask) {
+      setEditTitle(currentTask.title || "");
+      setTaskColor(currentTask.color || "#FFFFFF");
+    }
+  }, [currentTask]);
+
   const openEditModal = useCallback((task) => {
     setCurrentTask(task);
     setIsEditModalOpen(true);
   }, []);
 
-  // ฟังก์ชันอัปเดต task เมื่อกดปุ่ม Update ใน modal
   const handleUpdateTask = async () => {
     if (!editorInstance || !currentTask) return;
     try {
       const outputData = await editorInstance.save();
       const payload = {
-        title: currentTask.title.trim(),
+        title: editTitle.trim(), // ใช้ค่าจาก editTitle แทน
         description: JSON.stringify(outputData),
         list: list.id,
         order: currentTask.order || 1,
-        color: taskColor, // เพิ่มการส่งสีใน payload
+        color: taskColor,
+        tags: taskTags,
       };
       await handleTaskAction(
         "edit",
@@ -84,7 +89,8 @@ const TaskCard = ({ list, setLists }) => {
     }
   };
 
-  // ฟังก์ชันสำหรับเพิ่ม task ใหม่
+  
+
   const handleAddTask = () => {
     if (taskTitle.trim() === "") return;
     handleTaskAction(
@@ -98,7 +104,6 @@ const TaskCard = ({ list, setLists }) => {
     setIsAddingTask(false);
   };
 
-  // ฟังก์ชัน render description จากข้อมูล JSON ของ EditorJS
   const renderDescription = (description) => {
     if (!description) return null;
     try {
@@ -128,7 +133,6 @@ const TaskCard = ({ list, setLists }) => {
     return null;
   };
 
-  // เนื้อหาของ Modal สำหรับแก้ไข task (render ผ่าน React Portal)
   const modalContent = (
     <div
       className={`modal fade ${isEditModalOpen ? "show" : ""}`}
@@ -157,17 +161,20 @@ const TaskCard = ({ list, setLists }) => {
             <label className="form-label fw-semibold text-dark">
               Task Title
             </label>
-            <input
-              className="form-control mb-3 border-secondary"
-              value={currentTask?.title || ""}
-              onChange={(e) =>
-                setCurrentTask({
-                  ...currentTask,
-                  title: e.target.value,
-                })
-              }
-              placeholder="Enter task title"
-            />
+            <div className="input-group mb-3">
+              <span className="input-group-text" id="basic-addon1">
+                @
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                value={editTitle} // ใช้ค่าจาก editTitle
+                onChange={(e) => setEditTitle(e.target.value)} // อัปเดต editTitle แทน currentTask
+              />
+            </div>
             <label className="form-label fw-semibold text-dark">
               Description
             </label>
@@ -176,14 +183,13 @@ const TaskCard = ({ list, setLists }) => {
               className="editorjs-container border rounded p-3 bg-white"
             ></div>
 
-            {/* เพิ่มช่องเลือกสี */}
             <label className="form-label fw-semibold text-dark">
               Task Color
             </label>
             <input
               type="color"
               value={taskColor}
-              onChange={(e) => setTaskColor(e.target.value)} // อัปเดตสีที่เลือก
+              onChange={(e) => setTaskColor(e.target.value)}
               className="form-control mb-3"
             />
           </div>
@@ -216,50 +222,87 @@ const TaskCard = ({ list, setLists }) => {
             className="task-container shadow p-3 mb-3 bg-light"
           >
             {list.tasks?.map((task, index) => (
-              <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
+              <Draggable
+                key={task.id}
+                draggableId={`task-${task.id}`}
+                index={index}
+              >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <div className="task-item card mb-2 p-3" style={{ backgroundColor: task.color || "#fff" }} >
-                    <div className="d-flex justify-content-between align-items-center">
-                      <span className="badge bg-primary  fs-6" onClick={() => openEditModal(task)}
-                      >{task.title}</span>
-<div>
-                    <button
-                      type="button"
-                      className="btn btn-light p-1 me-1  shadow-sm"
-                      onClick={() => openEditModal(task)}
-                      title="Edit Task"
-                    >
-                      <FiEdit size={16} className="text-primary" />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-light p-1 shadow-sm"
-                      onClick={() => handleTaskAction("delete", task.id, null, list.id, setLists)}
-                      title="Delete Task"
-                    >
-                      <FiTrash2 size={16} className="text-danger" />
-                    </button>
-                  </div>
-                    </div>
                     <div
-                      className="task-description mt-2 bg-white p-2 rounded "
-                      style={{
-                        overflow: "hidden",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                      }}
+                      className="task-item card mb-2 p-2"
+                      style={{ backgroundColor: task.color || "#fff" }}
                     >
-                      {renderDescription(task.description)}
+                      <div className="d-flex justify-content-between align-items-center">
+                        <span
+                          className="badge bg-primary fs-6"
+                          onClick={() => openEditModal(task)}
+                        >
+                          {task.title}
+                        </span>
+                        <div>
+                          <button
+                            type="button"
+                            className="btn btn-light p-1 me-1 shadow-sm"
+                            onClick={() => openEditModal(task)}
+                            title="Edit Task"
+                          >
+                            <FiEdit size={16} className="text-primary" />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-light p-1 shadow-sm"
+                            onClick={() =>
+                              handleTaskAction(
+                                "delete",
+                                task.id,
+                                null,
+                                list.id,
+                                setLists
+                              )
+                            }
+                            title="Delete Task"
+                          >
+                            <FiTrash2 size={16} className="text-danger" />
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        className="task-description mt-2 bg-white p-2 rounded"
+                        style={{
+                          overflow: "hidden",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {renderDescription(task.description)}
+                      </div>
+                      <div className="d-flex flex-wrap gap-2 mt-2">
+                        {task.tags?.slice(0, 3).map((tag, index) => (
+                          <span
+                            key={index}
+                            className="badge rounded-pill bg-info text-white"
+                            style={{
+                              minWidth: "70px",
+                              height: "24px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: "6px 12px",
+                              fontSize: "10px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {tag.name}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    </div>
-                    
-
                   </div>
                 )}
               </Draggable>
@@ -267,7 +310,10 @@ const TaskCard = ({ list, setLists }) => {
             {provided.placeholder}
             <div className="task-add-container mt-3">
               {!isAddingTask ? (
-                <div className="add-task-btn btn btn-outline-primary" onClick={() => setIsAddingTask(true)}>
+                <div
+                  className="add-task-btn btn btn-outline-primary"
+                  onClick={() => setIsAddingTask(true)}
+                >
                   <FiPlus /> Add Task
                 </div>
               ) : (
@@ -279,10 +325,16 @@ const TaskCard = ({ list, setLists }) => {
                     className="form-control mb-2"
                   />
                   <div className="task-actions">
-                    <button className="btn btn-primary me-2" onClick={handleAddTask}>
+                    <button
+                      className="btn btn-primary me-2"
+                      onClick={handleAddTask}
+                    >
                       Add
                     </button>
-                    <button className="btn btn-secondary" onClick={() => setIsAddingTask(false)}>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setIsAddingTask(false)}
+                    >
                       Cancel
                     </button>
                   </div>
@@ -292,7 +344,6 @@ const TaskCard = ({ list, setLists }) => {
           </div>
         )}
       </Droppable>
-      {/* Render Modal ผ่าน React Portal */}
       {isEditModalOpen && ReactDOM.createPortal(modalContent, document.body)}
     </>
   );

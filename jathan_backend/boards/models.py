@@ -53,6 +53,13 @@ class List(BaseModel):  # Use BaseModel
         super().save(*args, **kwargs)
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Task(BaseModel):
     list = models.ForeignKey(
         List, on_delete=models.CASCADE, related_name="tasks")
@@ -66,6 +73,7 @@ class Task(BaseModel):
         null=True
     )
     color = models.CharField(max_length=7, default="#FFFFFF")  # เพิ่มฟิลด์สี
+    tags = models.ManyToManyField(Tag, blank=True)  # แทน ArrayField
 
     def save(self, *args, **kwargs):
         """

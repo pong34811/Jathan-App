@@ -1,7 +1,6 @@
 import json
 from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from boards.models import Board, List, Task
 from .serializers import ListSerializer, BoardSerializer, TaskSerializer
