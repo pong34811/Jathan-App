@@ -216,52 +216,35 @@ const TaskCard = ({ list, setLists }) => {
             className="task-container shadow p-3 mb-3 bg-light"
           >
             {list.tasks?.map((task, index) => (
-              <Draggable
-                key={task.id}
-                draggableId={`task-${task.id}`}
-                index={index}
-              >
+              <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className="task-item card mb-2 p-3"
-                    style={{ backgroundColor: task.color || "#fff" }} // เพิ่มการแสดงสี
                   >
+                    <div className="task-item card mb-2 p-3" style={{ backgroundColor: task.color || "#fff" }} >
                     <div className="d-flex justify-content-between align-items-center">
-                      <span
-                        className="badge bg-primary  fs-6"
-                        onClick={() => openEditModal(task)}
-                      >
-                        {task.title}
-                      </span>
-                      <div className="d-flex justify-content-center">
-                        <button
-                          type="button"
-                          className="btn p-2 me-2 rounded-md bg-white border-0 shadow-sm hover-shadow-lg"
-                          onClick={() => openEditModal(task)}
-                          title="Edit Task"
-                        >
-                          <FiEdit size={18} className="text-primary" />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn p-2  rounded-md bg-white border-0 shadow-sm hover-shadow-lg"
-                          onClick={() =>
-                            handleTaskAction(
-                              "delete",
-                              task.id,
-                              null,
-                              list.id,
-                              setLists
-                            )
-                          }
-                          title="Delete Task"
-                        >
-                          <FiTrash2 size={18} className="text-danger" />
-                        </button>
-                      </div>
+                      <span className="badge bg-primary  fs-6" onClick={() => openEditModal(task)}
+                      >{task.title}</span>
+<div>
+                    <button
+                      type="button"
+                      className="btn btn-light p-1 me-1  shadow-sm"
+                      onClick={() => openEditModal(task)}
+                      title="Edit Task"
+                    >
+                      <FiEdit size={16} className="text-primary" />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-light p-1 shadow-sm"
+                      onClick={() => handleTaskAction("delete", task.id, null, list.id, setLists)}
+                      title="Delete Task"
+                    >
+                      <FiTrash2 size={16} className="text-danger" />
+                    </button>
+                  </div>
                     </div>
                     <div
                       className="task-description mt-2 bg-white p-2 rounded "
@@ -274,6 +257,9 @@ const TaskCard = ({ list, setLists }) => {
                     >
                       {renderDescription(task.description)}
                     </div>
+                    </div>
+                    
+
                   </div>
                 )}
               </Draggable>
@@ -281,10 +267,7 @@ const TaskCard = ({ list, setLists }) => {
             {provided.placeholder}
             <div className="task-add-container mt-3">
               {!isAddingTask ? (
-                <div
-                  className="add-task-btn btn btn-outline-primary"
-                  onClick={() => setIsAddingTask(true)}
-                >
+                <div className="add-task-btn btn btn-outline-primary" onClick={() => setIsAddingTask(true)}>
                   <FiPlus /> Add Task
                 </div>
               ) : (
@@ -292,26 +275,25 @@ const TaskCard = ({ list, setLists }) => {
                   <input
                     value={taskTitle}
                     onChange={(e) => setTaskTitle(e.target.value)}
+                    placeholder="Enter task title..."
                     className="form-control mb-2"
-                    placeholder="Enter new task title"
                   />
-                  <button className="btn btn-success" onClick={handleAddTask}>
-                    Add Task
-                  </button>
-                  <button
-                    className="btn btn-outline-secondary ms-2"
-                    onClick={() => setIsAddingTask(false)}
-                  >
-                    Cancel
-                  </button>
+                  <div className="task-actions">
+                    <button className="btn btn-primary me-2" onClick={handleAddTask}>
+                      Add
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => setIsAddingTask(false)}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
           </div>
         )}
       </Droppable>
-
-      {ReactDOM.createPortal(modalContent, document.body)}
+      {/* Render Modal ผ่าน React Portal */}
+      {isEditModalOpen && ReactDOM.createPortal(modalContent, document.body)}
     </>
   );
 };
