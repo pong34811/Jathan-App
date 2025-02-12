@@ -231,7 +231,7 @@ const TaskCard = ({ list, setLists }) => {
                   >
                     <div className="d-flex justify-content-between align-items-center">
                       <span
-                        className="badge bg-primary rounded-pill fs-6"
+                        className="badge bg-primary  fs-6"
                         onClick={() => openEditModal(task)}
                       >
                         {task.title}
@@ -264,7 +264,7 @@ const TaskCard = ({ list, setLists }) => {
                       </div>
                     </div>
                     <div
-                      className="task-description mt-2"
+                      className="task-description mt-2 bg-white p-2 rounded "
                       style={{
                         overflow: "hidden",
                         display: "-webkit-box",
