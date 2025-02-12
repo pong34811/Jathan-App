@@ -6,7 +6,7 @@ from boards.models import Board, List, Task
 from .serializers import ListSerializer, BoardSerializer, TaskSerializer
 from rest_framework.filters import SearchFilter
 from django.db.models import Count
-from notifications.services import send_line_notify
+from notifications.services import send_line_notify, send_email_notification
 
 class BoardViewSet(viewsets.ModelViewSet):
     queryset = Board.objects.all().annotate(
@@ -20,19 +20,35 @@ class BoardViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         board = serializer.save(created_by=self.request.user)
-        if self.request.user.is_notify_create_board:  # ตรวจสอบฟิลด์แจ้งเตือน
-            send_line_notify(self.request.user, f"📌 Board '{board.title}' has been created!")
+        message = f"📌 Board '{board.title}' has been created!"
+        
+        if self.request.user.is_notify_create_board:
+            send_line_notify(self.request.user, message)
+        if self.request.user.is_email_notify_create_board:
+            send_email_notification(self.request.user, "Board Created", message, "is_email_notify_create_board")
 
     def perform_update(self, serializer):
         board = serializer.save(updated_by=self.request.user)
-        if self.request.user.is_notify_update_board:  # ตรวจสอบฟิลด์แจ้งเตือน
-            send_line_notify(self.request.user, f"✏️ Board '{board.title}' has been updated!")
+        message = f"✏️ Board '{board.title}' has been updated!"
+        
+        if self.request.user.is_notify_update_board:
+            send_line_notify(self.request.user, message)
+            
+        if self.request.user.is_email_notify_update_board:
+            send_email_notification(self.request.user, "Board Updated", message, "is_email_notify_update_board")
 
     def perform_destroy(self, instance):
         title = instance.title
-        if self.request.user.is_notify_delete_board:  # ตรวจสอบฟิลด์แจ้งเตือน
-            send_line_notify(self.request.user, f"🗑️ Board '{title}' has been deleted!")
+        message = f"🗑️ Board '{title}' has been deleted!"
+        
+        if self.request.user.is_notify_delete_board:
+            send_line_notify(self.request.user, message)
+        if self.request.user.is_email_notify_delete_board:
+            send_email_notification(self.request.user, "Board Deleted", message, "is_email_notify_delete_board")
+        
         instance.delete()
+
+
 
 
 
@@ -47,6 +63,8 @@ class ListViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(board_id=board_id).order_by('order')
         return self.queryset
 
+from notifications.services import send_line_notify, send_email_notification
+
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
@@ -59,10 +77,13 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         task = serializer.save(created_by=self.request.user, updated_by=self.request.user)
-        
-        # เช็คค่า is_notify_create_task ก่อนส่งการแจ้งเตือน
+        message = f"✅ Task '{task.title}' has been created!"
+
         if self.request.user.is_notify_create_task:
-            send_line_notify(self.request.user, f"✅ Task '{task.title}' has been created!")
+            send_line_notify(self.request.user, message)
+            
+        if self.request.user.is_email_notify_create_task:
+            send_email_notification(self.request.user, "Task Created", message, "is_email_notify_create_task")
 
     def perform_update(self, serializer):
         task = self.get_object()
@@ -77,18 +98,23 @@ class TaskViewSet(viewsets.ModelViewSet):
             except ValueError:
                 raise ValidationError("Description must be a valid JSON format.")
 
-        # Save the updated task
         serializer.save(updated_by=self.request.user)
-        
-        # เช็คค่า is_notify_update_task ก่อนส่งการแจ้งเตือน
+        message = f"✏️ Task '{task.title}' has been updated!"
+
         if self.request.user.is_notify_update_task:
-            send_line_notify(self.request.user, f"✏️ Task '{task.title}' has been updated!")
+            send_line_notify(self.request.user, message)
+            
+        if self.request.user.is_email_notify_update_task:
+            send_email_notification(self.request.user, "Task Updated", message, "is_email_notify_update_task")
 
     def perform_destroy(self, instance):
         title = instance.title
-        
-        # เช็คค่า is_notify_delete_task ก่อนส่งการแจ้งเตือน
+        message = f"🗑️ Task '{title}' has been deleted!"
+
         if self.request.user.is_notify_delete_task:
-            send_line_notify(self.request.user, f"🗑️ Task '{title}' has been deleted!")
-        
+            send_line_notify(self.request.user, message)    
+            
+        if self.request.user.is_email_notify_delete_task:
+            send_email_notification(self.request.user, "Task Deleted", message, "is_email_notify_delete_task")
+
         instance.delete()

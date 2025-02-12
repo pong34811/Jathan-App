@@ -21,18 +21,32 @@ class UserAdminCustom(UserAdmin):
             },
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
-        (_("Notification settings for Board"), {
+        (_("Line Notification settings for Board"), {
             "fields": (
                 "is_notify_create_board", 
                 "is_notify_update_board", 
                 "is_notify_delete_board"
             )
         }),
-        (_("Notification settings for Task"), {
+        (_("Line Notification settings for Task"), {
             "fields": (
                 "is_notify_create_task", 
                 "is_notify_update_task", 
                 "is_notify_delete_task"
+            )
+        }),
+        (_("Email Notification settings for Board"), {
+            "fields": (
+                "is_email_notify_create_board", 
+                "is_email_notify_update_board", 
+                "is_email_notify_delete_board"
+            )
+        }),
+        (_("Email Notification settings for Task"), {
+            "fields": (
+                "is_email_notify_create_task", 
+                "is_email_notify_update_task", 
+                "is_email_notify_delete_task"
             )
         }),
     )
@@ -55,7 +69,13 @@ class UserAdminCustom(UserAdmin):
                     "is_notify_delete_board",
                     "is_notify_create_task",
                     "is_notify_update_task", 
-                    "is_notify_delete_task"
+                    "is_notify_delete_task",
+                    "is_email_notify_create_board",
+                    "is_email_notify_update_board",
+                    "is_email_notify_delete_board",
+                    "is_email_notify_create_task",
+                    "is_email_notify_update_task",
+                    "is_email_notify_delete_task"
                 )
             },
         ),
@@ -66,6 +86,8 @@ class UserAdminCustom(UserAdmin):
         "email", "first_name", "last_name", "line_user_id", 
         "is_notify_create_board", "is_notify_update_board", "is_notify_delete_board",
         "is_notify_create_task", "is_notify_update_task", "is_notify_delete_task", 
+        "is_email_notify_create_board","is_email_notify_update_board","is_email_notify_delete_board",
+        "is_email_notify_create_task","is_email_notify_update_task","is_email_notify_delete_task",
         "is_active", "is_staff", "date_joined", "last_login"
     )
 

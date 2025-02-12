@@ -10,7 +10,7 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_("Last Name"), max_length=100, null=True, blank=True)
     line_user_id = models.CharField(_("LINE User ID"), max_length=50, null=True, blank=True)
 
-    # ฟิลด์แจ้งเตือน
+    # ฟิลด์แจ้งเตือน Line
     is_notify_create_board = models.BooleanField(default=True)
     is_notify_update_board = models.BooleanField(default=True)
     is_notify_delete_board = models.BooleanField(default=True)
@@ -18,6 +18,15 @@ class CustomUserModel(AbstractBaseUser, PermissionsMixin):
     is_notify_create_task = models.BooleanField(default=True)
     is_notify_update_task = models.BooleanField(default=True)
     is_notify_delete_task = models.BooleanField(default=True)
+    
+    # ฟิลด์แจ้งเตือน Email
+    is_email_notify_create_board = models.BooleanField(default=True)
+    is_email_notify_update_board = models.BooleanField(default=True)
+    is_email_notify_delete_board = models.BooleanField(default=True)
+    
+    is_email_notify_create_task = models.BooleanField(default=True)
+    is_email_notify_update_task = models.BooleanField(default=True)
+    is_email_notify_delete_task = models.BooleanField(default=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
