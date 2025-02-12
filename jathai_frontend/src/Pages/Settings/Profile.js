@@ -3,6 +3,7 @@ import useUsers from "../Dashboards/Boards/hooks/useUsers";
 import { FaLine } from "react-icons/fa";
 import handleLineLogin from "./controller/handleLineLogin";
 import useDisconnectLine from "./controller/useDisconnectLine";
+import DeleteLineModal from "./modal/DeleteLineModal";
 
 function Profile() {
   const { handleDisconnectLine, isProcessing } = useDisconnectLine();
@@ -91,13 +92,10 @@ function Profile() {
                   <div className="d-flex align-items-center justify-content-between">
                     <span>{user.line_user_id}</span>
                     <button
-                      className="btn btn-danger btn-sm"
-                      onClick={handleDisconnectLine}
+                      className="btn btn-danger btn-sm "
+                      data-bs-toggle="modal"
+                      data-bs-target="#DeleteLineModal"
                     >
-                      Disconnect LINE
-                    </button>
-
-                    <button className="btn btn-danger btn-sm">
                       Disconnect LINE
                     </button>
                   </div>
@@ -113,6 +111,7 @@ function Profile() {
             </ul>
           </div>
         </div>
+        <DeleteLineModal id="DeleteLineModal" />
       </div>
     </>
   );
