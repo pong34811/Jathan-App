@@ -32,33 +32,39 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
-    "django.contrib.auth",
+    "django.contrib.auth", 
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    # corsheader
+    "django.contrib.sessions", 
+    "django.contrib.messages", 
+    "django.contrib.staticfiles", 
+    
+    # CORS Headers (ใช้จัดการ CORS สำหรับ API)
     "corsheaders",
-	# rest-framework
-    'rest_framework',
-    'rest_framework.authtoken',
-	# dj-rest-auth
-	'dj_rest_auth.registration',
-    'dj_rest_auth',
-	# allauth
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-	# allauth social accounts
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    # local app
-    "accounts",
-    "boards",
-    # django_filters
-    'django_filters',
-    'notifications',
+
+    # Django REST Framework (สำหรับสร้าง API)
+    "rest_framework",
+    "rest_framework.authtoken",  # ใช้ Token Authentication
+
+    # DJ-Rest-Auth (จัดการ Authentication API)
+    "dj_rest_auth.registration",  
+    "dj_rest_auth", 
+    "django_filters", 
+
+    # Allauth (ใช้จัดการระบบบัญชีผู้ใช้)
+    "django.contrib.sites", 
+    "allauth",
+    "allauth.account",  
+
+    # Allauth Social Accounts (รองรับการล็อกอินด้วยโซเชียล เช่น Google)
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google", 
+
+    # Local Apps (แอปที่สร้างขึ้นเองในโปรเจกต์)
+    "accounts",  # จัดการบัญชีผู้ใช้
+    "boards",  # ระบบบอร์ดหรือกระดานงาน
+    "notifications", # ระบบแจ้งเตือน (Notification)
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

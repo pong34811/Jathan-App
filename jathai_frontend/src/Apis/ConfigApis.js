@@ -8,9 +8,10 @@
 export const URL_AUTH = {
   BoardAPI: "http://localhost:8000/api/boards/",
   ListsAPI: "http://localhost:8000/api/lists/",
-  ReorderListsAPI: "http://localhost:8000.space/api/lists/reorder/",
+  ReorderListsAPI: "http://localhost:8000/api/lists/reorder/", // แก้เป็น /api/lists/reorder/
   TasksAPI: "http://localhost:8000/api/tasks/",
   UsersAPI: "http://localhost:8000/dj-rest-auth/user/", // เพิ่ม URL สำหรับ Users
-  UserDetailAPI : "http://localhost:8000/user/"
+  UserDetailAPI: "http://localhost:8000/user/",
 };
+
   

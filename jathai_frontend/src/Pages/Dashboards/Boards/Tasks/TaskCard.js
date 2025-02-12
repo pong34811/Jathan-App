@@ -15,6 +15,7 @@ const TaskCard = ({ list, setLists }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
   const [editorInstance, setEditorInstance] = useState(null);
+  const [taskColor, setTaskColor] = useState("#FFFFFF"); // state สำหรับเก็บสีของ task
 
   // ref สำหรับ EditorJS holder
   const editorRef = useRef(null);
@@ -38,7 +39,9 @@ const TaskCard = ({ list, setLists }) => {
       }
       const editor = new EditorJS({
         holder: editorRef.current,
-        data: currentTask.description ? JSON.parse(currentTask.description) : {},
+        data: currentTask.description
+          ? JSON.parse(currentTask.description)
+          : {},
         tools: {
           header: Header,
           list: List,
@@ -66,8 +69,15 @@ const TaskCard = ({ list, setLists }) => {
         description: JSON.stringify(outputData),
         list: list.id,
         order: currentTask.order || 1,
+        color: taskColor, // เพิ่มการส่งสีใน payload
       };
-      await handleTaskAction("edit", currentTask.id, payload, list.id, setLists);
+      await handleTaskAction(
+        "edit",
+        currentTask.id,
+        payload,
+        list.id,
+        setLists
+      );
       setIsEditModalOpen(false);
     } catch (error) {
       console.error("Failed to update task:", error);
@@ -77,7 +87,13 @@ const TaskCard = ({ list, setLists }) => {
   // ฟังก์ชันสำหรับเพิ่ม task ใหม่
   const handleAddTask = () => {
     if (taskTitle.trim() === "") return;
-    handleTaskAction("add", null, { title: taskTitle.trim(), list: list.id }, list.id, setLists);
+    handleTaskAction(
+      "add",
+      null,
+      { title: taskTitle.trim(), list: list.id },
+      list.id,
+      setLists
+    );
     setTaskTitle("");
     setIsAddingTask(false);
   };
@@ -138,7 +154,9 @@ const TaskCard = ({ list, setLists }) => {
             ></button>
           </div>
           <div className="modal-body p-4 bg-light">
-            <label className="form-label fw-semibold text-dark">Task Title</label>
+            <label className="form-label fw-semibold text-dark">
+              Task Title
+            </label>
             <input
               className="form-control mb-3 border-secondary"
               value={currentTask?.title || ""}
@@ -150,14 +168,36 @@ const TaskCard = ({ list, setLists }) => {
               }
               placeholder="Enter task title"
             />
-            <label className="form-label fw-semibold text-dark">Description</label>
-            <div ref={editorRef} className="editorjs-container border rounded p-3 bg-white"></div>
+            <label className="form-label fw-semibold text-dark">
+              Description
+            </label>
+            <div
+              ref={editorRef}
+              className="editorjs-container border rounded p-3 bg-white"
+            ></div>
+
+            {/* เพิ่มช่องเลือกสี */}
+            <label className="form-label fw-semibold text-dark">
+              Task Color
+            </label>
+            <input
+              type="color"
+              value={taskColor}
+              onChange={(e) => setTaskColor(e.target.value)} // อัปเดตสีที่เลือก
+              className="form-control mb-3"
+            />
           </div>
           <div className="modal-footer d-flex justify-content-between p-3 bg-light border-top">
-            <button className="btn btn-outline-secondary" onClick={() => setIsEditModalOpen(false)}>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => setIsEditModalOpen(false)}
+            >
               Cancel
             </button>
-            <button className="btn btn-primary fw-bold px-4" onClick={handleUpdateTask}>
+            <button
+              className="btn btn-primary fw-bold px-4"
+              onClick={handleUpdateTask}
+            >
               Save Changes
             </button>
           </div>
@@ -165,8 +205,7 @@ const TaskCard = ({ list, setLists }) => {
       </div>
     </div>
   );
-  
-  
+
   return (
     <>
       <Droppable droppableId={`list-${list.id}`} type="task">
@@ -177,21 +216,30 @@ const TaskCard = ({ list, setLists }) => {
             className="task-container shadow p-3 mb-3 bg-light"
           >
             {list.tasks?.map((task, index) => (
-              <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
+              <Draggable
+                key={task.id}
+                draggableId={`task-${task.id}`}
+                index={index}
+              >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className="task-item card mb-2 p-3"
+                    style={{ backgroundColor: task.color || "#fff" }} // เพิ่มการแสดงสี
                   >
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className="badge bg-primary rounded-pill fs-6" onClick={() => openEditModal(task)}
-                      >{task.title}</span>
-                      <div>
+                      <span
+                        className="badge bg-primary rounded-pill fs-6"
+                        onClick={() => openEditModal(task)}
+                      >
+                        {task.title}
+                      </span>
+                      <div className="d-flex justify-content-center">
                         <button
                           type="button"
-                          className="btn btn-link p-0 me-2"
+                          className="btn p-2 me-2 rounded-md bg-white border-0 shadow-sm hover-shadow-lg"
                           onClick={() => openEditModal(task)}
                           title="Edit Task"
                         >
@@ -199,8 +247,16 @@ const TaskCard = ({ list, setLists }) => {
                         </button>
                         <button
                           type="button"
-                          className="btn btn-link p-0"
-                          onClick={() => handleTaskAction("delete", task.id, null, list.id, setLists)}
+                          className="btn p-2  rounded-md bg-white border-0 shadow-sm hover-shadow-lg"
+                          onClick={() =>
+                            handleTaskAction(
+                              "delete",
+                              task.id,
+                              null,
+                              list.id,
+                              setLists
+                            )
+                          }
                           title="Delete Task"
                         >
                           <FiTrash2 size={18} className="text-danger" />
@@ -218,7 +274,6 @@ const TaskCard = ({ list, setLists }) => {
                     >
                       {renderDescription(task.description)}
                     </div>
-
                   </div>
                 )}
               </Draggable>
@@ -226,7 +281,10 @@ const TaskCard = ({ list, setLists }) => {
             {provided.placeholder}
             <div className="task-add-container mt-3">
               {!isAddingTask ? (
-                <div className="add-task-btn btn btn-outline-primary" onClick={() => setIsAddingTask(true)}>
+                <div
+                  className="add-task-btn btn btn-outline-primary"
+                  onClick={() => setIsAddingTask(true)}
+                >
                   <FiPlus /> Add Task
                 </div>
               ) : (
@@ -234,25 +292,26 @@ const TaskCard = ({ list, setLists }) => {
                   <input
                     value={taskTitle}
                     onChange={(e) => setTaskTitle(e.target.value)}
-                    placeholder="Enter task title..."
                     className="form-control mb-2"
+                    placeholder="Enter new task title"
                   />
-                  <div className="task-actions">
-                    <button className="btn btn-primary me-2" onClick={handleAddTask}>
-                      Add
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => setIsAddingTask(false)}>
-                      Cancel
-                    </button>
-                  </div>
+                  <button className="btn btn-success" onClick={handleAddTask}>
+                    Add Task
+                  </button>
+                  <button
+                    className="btn btn-outline-secondary ms-2"
+                    onClick={() => setIsAddingTask(false)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               )}
             </div>
           </div>
         )}
       </Droppable>
-      {/* Render Modal ผ่าน React Portal */}
-      {isEditModalOpen && ReactDOM.createPortal(modalContent, document.body)}
+
+      {ReactDOM.createPortal(modalContent, document.body)}
     </>
   );
 };

@@ -46,10 +46,10 @@ class ListAdmin(admin.ModelAdmin):
         obj.updated_by = request.user  # กำหนดผู้ปรับปรุง
         super().save_model(request, obj, form, change)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'list', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
-    search_fields = ('title', 'description')  # ค้นหาจากชื่อและคำอธิบาย
-
-    readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')  # ฟิลด์ที่ไม่สามารถแก้ไขได้
+    list_display = ("title", "list", "description", "color", "order", "created_at", "updated_at", "created_by", "updated_by")
+    search_fields = ("title", "description")  # ค้นหาจากชื่อและคำอธิบาย
+    list_filter = ("list", "color")  # เพิ่มฟิลด์ให้สามารถกรองข้อมูลในหน้าแอดมิน
+    readonly_fields = ("created_at", "updated_at", "created_by", "updated_by")  # ฟิลด์ที่ไม่สามารถแก้ไขได้
 
     def save_model(self, request, obj, form, change):
         """

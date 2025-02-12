@@ -2,16 +2,17 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from framework.models import BaseModel  # Import BaseModel
 
+
 class Board(BaseModel):  # Use BaseModel
     title = models.CharField(max_length=255)
-    details = models.CharField(max_length=255, blank=True, null=True)  # ทำให้เป็น optional field
-    is_star = models.BooleanField(default=False) 
+    # ทำให้เป็น optional field
+    details = models.CharField(max_length=255, blank=True, null=True)
+    is_star = models.BooleanField(default=False)
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
         related_name='boards'
     )
-    
 
     def __str__(self):
         return self.title
@@ -53,18 +54,18 @@ class List(BaseModel):  # Use BaseModel
 
 
 class Task(BaseModel):
-    list = models.ForeignKey(List, on_delete=models.CASCADE, related_name="tasks")
+    list = models.ForeignKey(
+        List, on_delete=models.CASCADE, related_name="tasks")
     title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)  # Can be a JSON string or plain text
+    # Can be a JSON string or plain text
+    description = models.TextField(blank=True, null=True)
     order = models.DecimalField(
         max_digits=30,
         decimal_places=15,
         blank=True,
         null=True
     )
-
-    class Meta:
-        ordering = ['order']
+    color = models.CharField(max_length=7, default="#FFFFFF")  # เพิ่มฟิลด์สี
 
     def save(self, *args, **kwargs):
         """
@@ -81,3 +82,6 @@ class Task(BaseModel):
                 # Default value if no tasks exist in the list
                 self.order = 2 ** 16 - 1
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

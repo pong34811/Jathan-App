@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import useUsers from "../Dashboards/Boards/hooks/useUsers";
 import { FaLine } from "react-icons/fa";
 import handleLineLogin from "./controller/handleLineLogin";
-import useDisconnectLine from "./controller/useDisconnectLine";
 import DeleteLineModal from "./modal/DeleteLineModal";
 
 function Profile() {
-  const { handleDisconnectLine, isProcessing } = useDisconnectLine();
   const { user, loading, refreshUser } = useUsers();
   const [isConnecting, setIsConnecting] = useState(false);
 

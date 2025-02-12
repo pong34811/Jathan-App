@@ -1,3 +1,10 @@
 {
-    "python.pythonPath": "c:\\Users\\admin\\Desktop\\Git\\Jathan-App\\venv\\Scripts\\python.exe"
+    "python.pythonPath": "c:\\Users\\admin\\Desktop\\Git\\Jathan-App\\venv\\Scripts\\python.exe",
+    "cSpell.ignoreWords": [
+        "filterset",
+        "viewsets",
+        "ก่อนส่งการแจ้งเตือน",
+        "ตรวจสอบฟิลด์แจ้งเตือน",
+        "เช็คค่า"
+    ]
 }
