@@ -16,8 +16,9 @@ const TaskCard = ({ list, setLists }) => {
   const [currentTask, setCurrentTask] = useState(null);
   const [editorInstance, setEditorInstance] = useState(null);
   const [taskColor, setTaskColor] = useState("#FFFFFF");
-  const [taskTags] = useState([]);
-  const [editTitle, setEditTitle] = useState(""); // เพิ่ม state ใหม่สำหรับจัดการ title ใน modal
+  // เก็บ tags เป็น array ของ object (เช่น { name: "tag1" })
+  const [taskTags, setTaskTags] = useState([]);
+  const [editTitle, setEditTitle] = useState("");
   const [newTag, setNewTag] = useState("");
 
   const editorRef = useRef(null);
@@ -38,9 +39,7 @@ const TaskCard = ({ list, setLists }) => {
       }
       const editor = new EditorJS({
         holder: editorRef.current,
-        data: currentTask.description
-          ? JSON.parse(currentTask.description)
-          : {},
+        data: currentTask.description ? JSON.parse(currentTask.description) : {},
         tools: {
           header: Header,
           list: List,
@@ -51,11 +50,14 @@ const TaskCard = ({ list, setLists }) => {
     }
   }, [isEditModalOpen, currentTask]);
 
-  // อัปเดตค่า editTitle เมื่อ currentTask เปลี่ยน
+  // เมื่อ currentTask เปลี่ยน ให้อัปเดตข้อมูลใน modal
   useEffect(() => {
     if (currentTask) {
       setEditTitle(currentTask.title || "");
       setTaskColor(currentTask.color || "#FFFFFF");
+      if (currentTask.tags) {
+        setTaskTags(currentTask.tags);
+      }
     }
   }, [currentTask]);
 
@@ -64,32 +66,51 @@ const TaskCard = ({ list, setLists }) => {
     setIsEditModalOpen(true);
   }, []);
 
+  // ฟังก์ชัน deduplicate tags ก่อนส่ง payload
+  const deduplicateTags = (tags) => {
+    const uniqueNames = Array.from(new Set(tags.map((tag) => tag.name.toLowerCase())));
+    return uniqueNames.map((name) => ({ name }));
+  };
+
   const handleUpdateTask = async () => {
     if (!editorInstance || !currentTask) return;
     try {
       const outputData = await editorInstance.save();
+      // ทำการ deduplicate tags ก่อนส่งไปยัง backend
+      const uniqueTags = deduplicateTags(
+        taskTags.map((tag) => (typeof tag === "string" ? { name: tag } : tag))
+      );
       const payload = {
-        title: editTitle.trim(), // ใช้ค่าจาก editTitle แทน
+        title: editTitle.trim(),
         description: JSON.stringify(outputData),
         list: list.id,
         order: currentTask.order || 1,
         color: taskColor,
-        tags: taskTags,
+        tags: uniqueTags,
       };
-      await handleTaskAction(
-        "edit",
-        currentTask.id,
-        payload,
-        list.id,
-        setLists
-      );
+      await handleTaskAction("edit", currentTask.id, payload, list.id, setLists);
       setIsEditModalOpen(false);
     } catch (error) {
       console.error("Failed to update task:", error);
     }
   };
 
-  
+  // เพิ่ม tag ใหม่ โดยตรวจสอบว่าชื่อ tag ซ้ำกับ tag ที่มีอยู่ใน state หรือไม่
+  const handleAddTag = () => {
+    const trimmedTag = newTag.trim();
+    if (
+      trimmedTag &&
+      !taskTags.some((tag) => tag.name.toLowerCase() === trimmedTag.toLowerCase())
+    ) {
+      setTaskTags([...taskTags, { name: trimmedTag }]);
+      setNewTag("");
+    }
+  };
+
+  // ลบ tag โดยอิงจากตำแหน่ง index
+  const handleRemoveTag = (index) => {
+    setTaskTags(taskTags.filter((_, i) => i !== index));
+  };
 
   const handleAddTask = () => {
     if (taskTitle.trim() === "") return;
@@ -162,17 +183,13 @@ const TaskCard = ({ list, setLists }) => {
               Task Title
             </label>
             <div className="input-group mb-3">
-              <span className="input-group-text" id="basic-addon1">
-                @
-              </span>
+              <span className="input-group-text">@</span>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Username"
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-                value={editTitle} // ใช้ค่าจาก editTitle
-                onChange={(e) => setEditTitle(e.target.value)} // อัปเดต editTitle แทน currentTask
+                placeholder="Task Title"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
               />
             </div>
             <label className="form-label fw-semibold text-dark">
@@ -192,6 +209,33 @@ const TaskCard = ({ list, setLists }) => {
               onChange={(e) => setTaskColor(e.target.value)}
               className="form-control mb-3"
             />
+
+            <label className="form-label fw-semibold text-dark">Tags</label>
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Add new tag"
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+              />
+              <button className="btn btn-secondary" onClick={handleAddTag}>
+                Add Tag
+              </button>
+            </div>
+            <div className="mb-3">
+              {taskTags.map((tag, index) => (
+                <span key={index} className="badge bg-primary me-2">
+                  {tag.name}
+                  <button
+                    type="button"
+                    className="btn-close btn-close-white ms-1"
+                    onClick={() => handleRemoveTag(index)}
+                    aria-label="Remove tag"
+                  ></button>
+                </span>
+              ))}
+            </div>
           </div>
           <div className="modal-footer d-flex justify-content-between p-3 bg-light border-top">
             <button
@@ -200,10 +244,7 @@ const TaskCard = ({ list, setLists }) => {
             >
               Cancel
             </button>
-            <button
-              className="btn btn-primary fw-bold px-4"
-              onClick={handleUpdateTask}
-            >
+            <button className="btn btn-primary fw-bold px-4" onClick={handleUpdateTask}>
               Save Changes
             </button>
           </div>
@@ -222,26 +263,12 @@ const TaskCard = ({ list, setLists }) => {
             className="task-container shadow p-3 mb-3 bg-light"
           >
             {list.tasks?.map((task, index) => (
-              <Draggable
-                key={task.id}
-                draggableId={`task-${task.id}`}
-                index={index}
-              >
+              <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
                 {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <div
-                      className="task-item card mb-2 p-2"
-                      style={{ backgroundColor: task.color || "#fff" }}
-                    >
+                  <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <div className="task-item card mb-2 p-2" style={{ backgroundColor: task.color || "#fff" }}>
                       <div className="d-flex justify-content-between align-items-center">
-                        <span
-                          className="badge bg-primary fs-6"
-                          onClick={() => openEditModal(task)}
-                        >
+                        <span className="badge bg-primary fs-6" onClick={() => openEditModal(task)}>
                           {task.title}
                         </span>
                         <div>
@@ -257,13 +284,7 @@ const TaskCard = ({ list, setLists }) => {
                             type="button"
                             className="btn btn-light p-1 shadow-sm"
                             onClick={() =>
-                              handleTaskAction(
-                                "delete",
-                                task.id,
-                                null,
-                                list.id,
-                                setLists
-                              )
+                              handleTaskAction("delete", task.id, null, list.id, setLists)
                             }
                             title="Delete Task"
                           >
@@ -288,13 +309,13 @@ const TaskCard = ({ list, setLists }) => {
                             key={index}
                             className="badge rounded-pill bg-info text-white"
                             style={{
-                              minWidth: "70px",
-                              height: "24px",
+                              minWidth: "50px",
+                              height: "20px",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              padding: "6px 12px",
-                              fontSize: "10px",
+                              padding: "4px 8px",
+                              fontSize: "8px",
                               textAlign: "center",
                             }}
                           >
@@ -310,10 +331,7 @@ const TaskCard = ({ list, setLists }) => {
             {provided.placeholder}
             <div className="task-add-container mt-3">
               {!isAddingTask ? (
-                <div
-                  className="add-task-btn btn btn-outline-primary"
-                  onClick={() => setIsAddingTask(true)}
-                >
+                <div className="add-task-btn btn btn-outline-primary" onClick={() => setIsAddingTask(true)}>
                   <FiPlus /> Add Task
                 </div>
               ) : (
@@ -325,16 +343,10 @@ const TaskCard = ({ list, setLists }) => {
                     className="form-control mb-2"
                   />
                   <div className="task-actions">
-                    <button
-                      className="btn btn-primary me-2"
-                      onClick={handleAddTask}
-                    >
+                    <button className="btn btn-primary me-2" onClick={handleAddTask}>
                       Add
                     </button>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => setIsAddingTask(false)}
-                    >
+                    <button className="btn btn-secondary" onClick={() => setIsAddingTask(false)}>
                       Cancel
                     </button>
                   </div>
