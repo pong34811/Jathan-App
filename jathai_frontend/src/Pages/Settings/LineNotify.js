@@ -1,5 +1,5 @@
 import React from "react";
-import { FaClipboardList, FaTasks, FaLayerGroup } from "react-icons/fa";
+import { FaTasks, FaLayerGroup } from "react-icons/fa";
 import useUsers from "../Dashboards/Boards/hooks/useUsers";
 
 const LineNotify = () => {
