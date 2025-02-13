@@ -7,6 +7,7 @@ import Header from "@editorjs/header";
 import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import { handleTaskAction } from "./TaskModel";
+import DeleteTaskModal from "./modal/DeleteTaskModal";
 import "./TaskModel.css";
 import "./TaskCard.css";
 
@@ -21,6 +22,10 @@ const TaskCard = ({ list, setLists }) => {
   const [taskTags, setTaskTags] = useState([]);
   const [editTitle, setEditTitle] = useState("");
   const [newTag, setNewTag] = useState("");
+
+  // state สำหรับ modal delete task
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const editorRef = useRef(null);
 
@@ -40,9 +45,7 @@ const TaskCard = ({ list, setLists }) => {
       }
       const editor = new EditorJS({
         holder: editorRef.current,
-        data: currentTask.description
-          ? JSON.parse(currentTask.description)
-          : {},
+        data: currentTask.description ? JSON.parse(currentTask.description) : {},
         tools: {
           header: Header,
           list: List,
@@ -71,9 +74,7 @@ const TaskCard = ({ list, setLists }) => {
 
   // ฟังก์ชัน deduplicate tags ก่อนส่ง payload
   const deduplicateTags = (tags) => {
-    const uniqueNames = Array.from(
-      new Set(tags.map((tag) => tag.name.toLowerCase()))
-    );
+    const uniqueNames = Array.from(new Set(tags.map((tag) => tag.name.toLowerCase())));
     return uniqueNames.map((name) => ({ name }));
   };
 
@@ -93,13 +94,7 @@ const TaskCard = ({ list, setLists }) => {
         color: taskColor,
         tags: uniqueTags,
       };
-      await handleTaskAction(
-        "edit",
-        currentTask.id,
-        payload,
-        list.id,
-        setLists
-      );
+      await handleTaskAction("edit", currentTask.id, payload, list.id, setLists);
       setIsEditModalOpen(false);
     } catch (error) {
       console.error("Failed to update task:", error);
@@ -111,9 +106,7 @@ const TaskCard = ({ list, setLists }) => {
     const trimmedTag = newTag.trim();
     if (
       trimmedTag &&
-      !taskTags.some(
-        (tag) => tag.name.toLowerCase() === trimmedTag.toLowerCase()
-      )
+      !taskTags.some((tag) => tag.name.toLowerCase() === trimmedTag.toLowerCase())
     ) {
       setTaskTags([...taskTags, { name: trimmedTag }]);
       setNewTag("");
@@ -127,13 +120,7 @@ const TaskCard = ({ list, setLists }) => {
 
   const handleAddTask = () => {
     if (taskTitle.trim() === "") return;
-    handleTaskAction(
-      "add",
-      null,
-      { title: taskTitle.trim(), list: list.id },
-      list.id,
-      setLists
-    );
+    handleTaskAction("add", null, { title: taskTitle.trim(), list: list.id }, list.id, setLists);
     setTaskTitle("");
     setIsAddingTask(false);
   };
@@ -192,9 +179,7 @@ const TaskCard = ({ list, setLists }) => {
             ></button>
           </div>
           <div className="modal-body p-4 bg-light">
-            <label className="form-label fw-semibold text-dark">
-              Task Title
-            </label>
+            <label className="form-label fw-semibold text-dark">Task Title</label>
             <div className="input-group mb-3">
               <span className="input-group-text">@</span>
               <input
@@ -205,17 +190,13 @@ const TaskCard = ({ list, setLists }) => {
                 onChange={(e) => setEditTitle(e.target.value)}
               />
             </div>
-            <label className="form-label fw-semibold text-dark">
-              Description
-            </label>
+            <label className="form-label fw-semibold text-dark">Description</label>
             <div
               ref={editorRef}
               className="editorjs-container border rounded p-3 bg-white"
             ></div>
 
-            <label className="form-label fw-semibold text-dark">
-              Task Color
-            </label>
+            <label className="form-label fw-semibold text-dark">Task Color</label>
             <input
               type="color"
               value={taskColor}
@@ -279,11 +260,7 @@ const TaskCard = ({ list, setLists }) => {
             className="task-container shadow p-3 mb-3 bg-light"
           >
             {list.tasks?.map((task, index) => (
-              <Draggable
-                key={task.id}
-                draggableId={`task-${task.id}`}
-                index={index}
-              >
+              <Draggable key={task.id} draggableId={`task-${task.id}`} index={index}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
@@ -298,8 +275,7 @@ const TaskCard = ({ list, setLists }) => {
                         cursor: "pointer",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow =
-                          "0 4px 8px rgba(0, 0, 0, 0.1)";
+                        e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
                         e.currentTarget.style.transform = "translateY(-2px)";
                       }}
                       onMouseLeave={(e) => {
@@ -312,7 +288,7 @@ const TaskCard = ({ list, setLists }) => {
                           <div
                             className="task-title-container text-truncate d-inline-block"
                             style={{ maxWidth: "150px" }}
-                            title={task.title} // ใช้ title ให้ hover แล้วเห็นชื่อเต็ม
+                            title={task.title}
                           >
                             <span
                               className="badge bg-primary fs-6 text-truncate w-100"
@@ -322,7 +298,6 @@ const TaskCard = ({ list, setLists }) => {
                             </span>
                           </div>
                         </div>
-
                         <div className="task-action-buttons">
                           <button
                             type="button"
@@ -335,15 +310,10 @@ const TaskCard = ({ list, setLists }) => {
                           <button
                             type="button"
                             className="delete-btn"
-                            onClick={() =>
-                              handleTaskAction(
-                                "delete",
-                                task.id,
-                                null,
-                                list.id,
-                                setLists
-                              )
-                            }
+                            onClick={() => {
+                              setTaskToDelete(task);
+                              setIsDeleteModalOpen(true);
+                            }}
                             title="Delete Task"
                           >
                             <FiTrash2 size={18} />
@@ -360,12 +330,12 @@ const TaskCard = ({ list, setLists }) => {
                             WebkitBoxOrient: "vertical",
                             maxHeight: "4.5em",
                             lineHeight: "1.5em",
-                            backgroundColor: "rgba(255, 255, 255, 0.8)", // พื้นหลังโปร่งใส
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
                             cursor: "pointer",
                             transition: "background-color 0.2s",
                           }}
                           title={task.description}
-                          onClick={() => openEditModal(task)} // คลิกเพื่อดูคำอธิบายเต็ม
+                          onClick={() => openEditModal(task)}
                         >
                           {renderDescription(task.description)}
                         </div>
@@ -373,12 +343,9 @@ const TaskCard = ({ list, setLists }) => {
                       {!task.description && (
                         <div
                           className="task-description mt-2 p-2 rounded"
-                          style={{
-                            backgroundColor: "transparent",
-                          }}
+                          style={{ backgroundColor: "transparent" }}
                         />
                       )}
-
                       <div className="d-flex flex-wrap gap-2 mt-2">
                         {task.tags?.slice(0, 3).map((tag, index) => (
                           <span
@@ -392,12 +359,12 @@ const TaskCard = ({ list, setLists }) => {
                               justifyContent: "center",
                               padding: "4px 8px",
                               fontSize: "10px",
-                              backgroundColor: tag.color || "#0d6efd", // สีของแท็ก
+                              backgroundColor: tag.color || "#0d6efd",
                               color: "#fff",
                               cursor: "pointer",
                               transition: "opacity 0.2s",
                             }}
-                            title={tag.name} // Tooltip สำหรับชื่อเต็ม
+                            title={tag.name}
                           >
                             {tag.name}
                           </span>
@@ -426,16 +393,10 @@ const TaskCard = ({ list, setLists }) => {
                     className="form-control mb-2"
                   />
                   <div className="task-actions">
-                    <button
-                      className="btn btn-primary me-2"
-                      onClick={handleAddTask}
-                    >
+                    <button className="btn btn-primary me-2" onClick={handleAddTask}>
                       Add
                     </button>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => setIsAddingTask(false)}
-                    >
+                    <button className="btn btn-secondary" onClick={() => setIsAddingTask(false)}>
                       Cancel
                     </button>
                   </div>
@@ -446,6 +407,18 @@ const TaskCard = ({ list, setLists }) => {
         )}
       </Droppable>
       {isEditModalOpen && ReactDOM.createPortal(modalContent, document.body)}
+      {isDeleteModalOpen &&
+        ReactDOM.createPortal(
+          <DeleteTaskModal
+            taskId={taskToDelete?.id}
+            onDelete={(taskId) => {
+              handleTaskAction("delete", taskId, null, list.id, setLists);
+              setIsDeleteModalOpen(false);
+            }}
+            onClose={() => setIsDeleteModalOpen(false)}
+          />,
+          document.body
+        )}
     </>
   );
 };
