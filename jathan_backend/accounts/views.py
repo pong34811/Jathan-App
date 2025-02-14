@@ -20,10 +20,6 @@ from rest_framework.authentication import SessionAuthentication
 from .models import CustomUserModel  # Import โมเดลของผู้ใช้
 
 
-class GoogleLogin(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
-    callback_url = "http://localhost:3000/"
-    client_class = OAuth2Client
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -34,7 +30,7 @@ def email_confirmation(request, key):
     return redirect(f"https://api.janhai.space/dj-rest-auth/registration/account-confirm-email/{key}")
 
 def reset_password_confirm(request, uid, token):
-    return redirect(f"http://localhost:3000/reset/password/confirm/{uid}/{token}")
+    return redirect(f"https://api.janhai.space/reset/password/confirm/{uid}/{token}")
 
 class UserDetailView(RetrieveUpdateAPIView):
     queryset = CustomUserModel.objects.all()
