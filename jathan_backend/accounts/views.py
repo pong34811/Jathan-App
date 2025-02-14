@@ -23,14 +23,14 @@ from .models import CustomUserModel  # Import โมเดลของผู้�
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "https://api.janhai.space/"
+    callback_url = "https://janhai.space/"
     client_class = OAuth2Client
 
 def email_confirmation(request, key):
-    return redirect(f"https://api.janhai.space/dj-rest-auth/registration/account-confirm-email/{key}")
+    return redirect(f"https://janhai.space/dj-rest-auth/registration/account-confirm-email/{key}")
 
 def reset_password_confirm(request, uid, token):
-    return redirect(f"https://api.janhai.space/reset/password/confirm/{uid}/{token}")
+    return redirect(f"https://janhai.space/reset/password/confirm/{uid}/{token}")
 
 class UserDetailView(RetrieveUpdateAPIView):
     queryset = CustomUserModel.objects.all()
