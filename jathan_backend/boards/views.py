@@ -77,7 +77,15 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         task = serializer.save(created_by=self.request.user, updated_by=self.request.user)
-        message = f"✅ Task '{task.title}' has been created!"
+        message = (
+            f"✅ Task Created Successfully!\n"
+            f"📌 Title: {task.title}\n"
+            f"📂 List: {task.list.title}\n"
+            f"🎨 Color: {task.color}\n"
+            f"🏷️ Tags: {', '.join(tag.name for tag in task.tags.all()) if task.tags.exists() else 'No tags'}\n"
+            f"👤 Assigned by: {task.created_by if task.created_by and task.created_by else 'Unknown'}"
+        )
+
 
         if self.request.user.is_notify_create_task:
             send_line_notify(self.request.user, message)
@@ -99,7 +107,14 @@ class TaskViewSet(viewsets.ModelViewSet):
                 raise ValidationError("Description must be a valid JSON format.")
 
         serializer.save(updated_by=self.request.user)
-        message = f"✏️ Task '{task.title}' has been updated!"
+        message = (
+            f"✏️ Task '{task.title}' has been updated!"
+            f"📌 Title: {task.title}\n"
+            f"📂 List: {task.list.title}\n"
+            f"🎨 Color: {task.color}\n"
+            f"🏷️ Tags: {', '.join(tag.name for tag in task.tags.all()) if task.tags.exists() else 'No tags'}\n"
+            f"👤 Assigned by: {task.created_by if task.created_by and task.created_by else 'Unknown'}"
+        )
 
         if self.request.user.is_notify_update_task:
             send_line_notify(self.request.user, message)
@@ -110,6 +125,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         title = instance.title
         message = f"🗑️ Task '{title}' has been deleted!"
+        
 
         if self.request.user.is_notify_delete_task:
             send_line_notify(self.request.user, message)    
