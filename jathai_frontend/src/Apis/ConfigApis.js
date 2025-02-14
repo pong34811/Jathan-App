@@ -5,3 +5,4 @@ export const URL_AUTH = {
   TasksAPI: "https://api.janhai.space/api/tasks/",
   UsersAPI: "https://api.janhai.space/dj-rest-auth/user/", // เพิ่ม URL สำหรับ Users
   UserDetailAPI: "https://api.janhai.space/user/",
+}
