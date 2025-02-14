@@ -6,10 +6,11 @@ import EditModal from "./ModalsBoards/EditModal";
 import DeleteModal from "./ModalsBoards/DeleteModal";
 import useBoards from "./hooks/useBoards";
 import { URL_AUTH } from "../../../Apis/ConfigApis";
-import { useNavigate  } from "react-router-dom"; // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
+import { useNavigate ,Link  } from "react-router-dom"; // ใช้ useNavigate เพื่อเปลี่ยนเส้นทาง
 import { connect } from "react-redux";
 
 import BoardWorkspace from "./BoardCard/BoardWorkspace";
+import Docs from "../../Docs";
 function Boards({ id }) {
   const [editBoard, setEditBoard] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -192,6 +193,7 @@ function Boards({ id }) {
             />
           )))}
       </div>
+      
 
       {/* Modals */}
       <CreateModal id="createBoardModal" onSave={handleSave} />

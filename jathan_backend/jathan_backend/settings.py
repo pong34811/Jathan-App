@@ -25,39 +25,46 @@ SECRET_KEY = 'django-insecure-48&9j_$ff79fxizkr9u$dorn#pn_+m31ed9!t=e%638(ew=cyg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
-    "django.contrib.auth",
+    "django.contrib.auth", 
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    # corsheader
+    "django.contrib.sessions", 
+    "django.contrib.messages", 
+    "django.contrib.staticfiles", 
+    
+    # CORS Headers (ใช้จัดการ CORS สำหรับ API)
     "corsheaders",
-	# rest-framework
-    'rest_framework',
-    'rest_framework.authtoken',
-	# dj-rest-auth
-	'dj_rest_auth.registration',
-    'dj_rest_auth',
-	# allauth
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-	# allauth social accounts
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    # local app
-    "accounts",
-    "boards",
-    # django_filters
-    'django_filters',
+
+    # Django REST Framework (สำหรับสร้าง API)
+    "rest_framework",
+    "rest_framework.authtoken",  # ใช้ Token Authentication
+
+    # DJ-Rest-Auth (จัดการ Authentication API)
+    "dj_rest_auth.registration",  
+    "dj_rest_auth", 
+    "django_filters", 
+
+    # Allauth (ใช้จัดการระบบบัญชีผู้ใช้)
+    "django.contrib.sites", 
+    "allauth",
+    "allauth.account",  
+
+    # Allauth Social Accounts (รองรับการล็อกอินด้วยโซเชียล เช่น Google)
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google", 
+
+    # Local Apps (แอปที่สร้างขึ้นเองในโปรเจกต์)
+    "accounts",  # จัดการบัญชีผู้ใช้
+    "boards",  # ระบบบอร์ดหรือกระดานงาน
+    "notifications", # ระบบแจ้งเตือน (Notification)
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -180,6 +187,7 @@ REST_AUTH = {
 # cors headers
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://172.16.0.136:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -192,3 +200,11 @@ EMAIL_HOST_USER = 'pong34811@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbhd jkxr mwgp xvun'
 
 AUTH_USER_MODEL = "accounts.CustomUserModel"
+
+
+# LINE API Configuration
+LINE_CLIENT_ID = '2006885737'
+LINE_CLIENT_SECRET = 'dc30f79157f0b0634979a873fddce4c5'
+LINE_REDIRECT_URI = 'http://localhost:3000/settings'
+
+LINE_BOT_ACCESS_TOKEN = "p+LZXvFOhO3OXsXHhYul1Yjj707zzteP6TXVPBXWiy2Qz1kP3z5udHzn+xS6LX0+sJXd4EOcVKdqdDfqqV3vtz4NMGeMfqZspkzxm0GB52vILXzbtmv1apBjqQvlNYcZDQd7VgtdlsmDHfij3BWdqwdB04t89/1O/w1cDnyilFU="

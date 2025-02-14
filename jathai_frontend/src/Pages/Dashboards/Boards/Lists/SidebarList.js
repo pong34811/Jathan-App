@@ -15,7 +15,7 @@ function SidebarList() {
 
   return (
     <>
-      <div className="position-sticky py-4">
+      <div className="position-sticky py-4" style={{width : "200px"}}>
         {/* ปุ่มย้อนกลับ */}
         <div className="px-3 mb-3">
           <button
@@ -27,29 +27,30 @@ function SidebarList() {
         </div>
         <hr className="text-white " />
         <h5 className="text-white px-3">Your boards</h5>
-        <ul className="nav flex-column px-3 ">
-          {loading ? (
-            <li className="nav-item text-white px-3">Loading...</li>
-          ) : (
-            boards.map((board) => (
-              <li className="nav-item" key={board.id}>
-                <Link
-                  to={`/lists/${board.id}`}
-                  className={`nav-link d-flex align-items-center text-white px-3 py-2 
-                                        ${
-                                          location.pathname ===
-                                          `/lists/${board.id}`
-                                            ? "active bg-primary"
-                                            : "hover-bg-light"
-                                        }`}
-                >
-                  <FaClipboardList className="me-2" />
-                  <span className="text-truncate">{board.title}</span>
-                </Link>
-              </li>
-            ))
-          )}
-        </ul>
+        <ul className="nav flex-column px-3">
+  {loading ? (
+    <li className="nav-item text-white px-3">Loading...</li>
+  ) : (
+    boards.map((board) => (
+      <li className="nav-item overflow-hidden" key={board.id}>
+        <Link
+          to={`/lists/${board.id}`}
+          className={`nav-link d-flex align-items-center text-white px-3 py-2 
+                      ${
+                        location.pathname === `/lists/${board.id}`
+                          ? "active bg-primary"
+                          : "hover-bg-light"
+                      }`}
+                      style={{ width: "180px"}}
+        >
+          <FaClipboardList className="me-2" />
+          <span className="w-100 text-truncate">{board.title}</span>
+        </Link>
+      </li>
+    ))
+  )}
+</ul>
+
         <hr />
         {/* ปุ่ม Logout */}
         <div className="px-3 mt-4">

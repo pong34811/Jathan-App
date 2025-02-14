@@ -1,5 +1,5 @@
 from django.contrib import admin
-from boards.models import Board, List ,Task
+from boards.models import Board, List ,Task ,Tag
 
 
 class BoardAdmin(admin.ModelAdmin):
@@ -45,11 +45,20 @@ class ListAdmin(admin.ModelAdmin):
             obj.created_by = request.user  # กำหนดผู้สร้าง
         obj.updated_by = request.user  # กำหนดผู้ปรับปรุง
         super().save_model(request, obj, form, change)
+        
+class TagAdmin(admin.ModelAdmin):
+    list_display = ("name",)  # แสดงชื่อของ Tag
+    search_fields = ("name",)  # ค้นหา Tag ตามชื่อ       
+        
+        
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'list', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
-    search_fields = ('title', 'description')  # ค้นหาจากชื่อและคำอธิบาย
-
-    readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')  # ฟิลด์ที่ไม่สามารถแก้ไขได้
+    list_display = ("title", "list", "description", "color", "get_tags", "order", "created_at", "updated_at", "created_by", "updated_by")
+    search_fields = ("title", "description")  # ค้นหาจากชื่อและคำอธิบาย
+    list_filter = ("list", "color", "tags") 
+    readonly_fields = ("created_at", "updated_at", "created_by", "updated_by")  # ฟิลด์ที่ไม่สามารถแก้ไขได้
+    
+    def get_tags(self, obj):
+        return ", ".join([tag.name for tag in obj.tags.all()])
 
     def save_model(self, request, obj, form, change):
         """
@@ -67,5 +76,6 @@ class TaskAdmin(admin.ModelAdmin):
 # ลงทะเบียนโมเดลกับ Django Admin
 admin.site.register(Board, BoardAdmin)
 admin.site.register(List, ListAdmin)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Task, TaskAdmin)
 
