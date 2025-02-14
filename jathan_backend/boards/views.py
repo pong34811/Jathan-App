@@ -48,10 +48,6 @@ class BoardViewSet(viewsets.ModelViewSet):
         
         instance.delete()
 
-
-
-
-
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.prefetch_related('tasks')
     serializer_class = ListSerializer
