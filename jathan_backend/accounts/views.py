@@ -21,11 +21,11 @@ from .models import CustomUserModel  # Import โมเดลของผู้�
 
 
 
-class GoogleLogin(SocialLoginView):
+class GoogleLogin(SocialLoginView): # if you want to use Authorization Code Grant, use this
     adapter_class = GoogleOAuth2Adapter
     callback_url = "https://janhai.space/"
     client_class = OAuth2Client
-
+    
 def email_confirmation(request, key):
     return redirect(f"https://janhai.space/dj-rest-auth/registration/account-confirm-email/{key}")
 
