@@ -19,14 +19,11 @@ from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 from rest_framework.authentication import SessionAuthentication
 from .models import CustomUserModel  # Import โมเดลของผู้ใช้
 
-<<<<<<< HEAD
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
     callback_url = "http://localhost:3000/"
     client_class = OAuth2Client
-=======
->>>>>>> 742d9f6f715186126a4f7e59bceae99fb33975ad
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
@@ -37,11 +34,7 @@ def email_confirmation(request, key):
     return redirect(f"https://api.janhai.space/dj-rest-auth/registration/account-confirm-email/{key}")
 
 def reset_password_confirm(request, uid, token):
-<<<<<<< HEAD
     return redirect(f"http://localhost:3000/reset/password/confirm/{uid}/{token}")
-=======
-    return redirect(f"https://api.janhai.space/reset/password/confirm/{uid}/{token}")
->>>>>>> 742d9f6f715186126a4f7e59bceae99fb33975ad
 
 class UserDetailView(RetrieveUpdateAPIView):
     queryset = CustomUserModel.objects.all()

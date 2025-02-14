@@ -17,10 +17,7 @@ const fetchUser = async () => {
             console.error("ไม่พบข้อมูล user id ใน token");
             return null;
         }
-<<<<<<< HEAD
         // สร้าง URL โดยต่อ user id เข้าไป เช่น http://localhost:8000/user/1/
-=======
->>>>>>> 742d9f6f715186126a4f7e59bceae99fb33975ad
         const url = `${URL_AUTH.UserDetailAPI}${userPk}/`;
 
         const response = await fetch(url, {
