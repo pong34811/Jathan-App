@@ -1,0 +1,26 @@
+.task-action-buttons {
+    display: flex;
+    gap: 5px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+    align-items: center; /* จัดให้ไอคอนอยู่ตรงกลาง */
+  }
+  
+  .edit-btn, .delete-btn {
+    background: white;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px; /* ทำให้ปุ่มโค้งมน */
+    transition: background 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  }
+  
+  .edit-btn:hover {
+    background: rgba(0, 123, 255, 0.1); /* สีฟ้าอ่อนเมื่อ hover */
+  }
+  
+  .delete-btn:hover {
+    background: rgba(255, 0, 0, 0.1); /* สีแดงอ่อนเมื่อ hover */
+  }
+  

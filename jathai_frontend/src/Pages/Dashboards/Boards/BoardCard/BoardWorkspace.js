@@ -28,9 +28,8 @@ const BoardWorkspace = ({
             data-bs-target="#editModal"
             onClick={() => setEditBoard(id)}
           >
-            <IoFolderOpen size={20} className="me-2" />
-            <span className="flex-grow-1">{title}</span>
-            <FaEdit size={20} className="ms-2" />
+            <FaEdit size={20} className="me-2" />
+            <span className="flex-grow-1 text-truncate" style={{width:"120px"}}>{title}</span>
           </h6>
           <div
             className="d-flex align-items-center gap-2 transition-all"

@@ -100,6 +100,26 @@ function Docs() {
         </div>
       </div>
 
+      {/* ขั้นตอนตั้งค่า Line Notify */}
+      <div className="row mb-5">
+        <div className="col-md-8 col-lg-6 mx-auto">
+          <div className="card">
+            <div className="card-header">
+              <h5>5. ขั้นตอนตั้งค่าเปิดใช้งาน Line</h5>
+            </div>
+            <div className="card-body">
+              <p>เพื่อเปิดใช้งานการแจ้งเตือนผ่าน Line กรุณาทำตามขั้นตอนต่อไปนี้:</p>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">1. เข้า <Link to="/settings/" target="_blank" rel="noopener noreferrer">Settings</Link></li>
+                <li className="list-group-item">2. Login ด้วยบัญชี Line เพื่อทำการผูกบัญชี Line กับระบบ</li>
+                <li className="list-group-item">3. หลังจาก Login เสร็จแล้ว หน้าต่างตั้งค่าเปิด-ปิด ระบบแจ้งเตือนผ่าน Line จะปรากฏขึ้น</li>
+                <li className="list-group-item">4. เลือกเปิดหรือปิดการแจ้งเตือนตามต้องการ และบันทึกการตั้งค่า</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ปุ่มกลับไปยังหน้าแรก */}
       <div className="text-center">
         <Link to="/" className="btn btn-primary mt-4">
