@@ -1,13 +1,12 @@
 {
     "builds": [{
-      "src": "jathan_backend/wsgi.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.13.1" }
+        "src": "jathan_backend/asgi.py",
+        "use": "@vercel/python"
     }],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "jathan_backend/wsgi.py"
-      }
+        {
+            "src": "/(.*)",
+            "dest": "jathan_backend/asgi.py"
+        }
     ]
 }
