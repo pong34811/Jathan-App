@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -65,6 +66,9 @@ CORS_ALLOW_HEADERS = (
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
+
+    
     "django.contrib.admin",
     "django.contrib.auth", 
     "django.contrib.contenttypes",
@@ -101,6 +105,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # cors header middleware
@@ -238,3 +243,8 @@ LINE_CLIENT_SECRET = 'dc30f79157f0b0634979a873fddce4c5'
 LINE_REDIRECT_URI = 'https://janhai.space/settings'
 
 LINE_BOT_ACCESS_TOKEN = "p+LZXvFOhO3OXsXHhYul1Yjj707zzteP6TXVPBXWiy2Qz1kP3z5udHzn+xS6LX0+sJXd4EOcVKdqdDfqqV3vtz4NMGeMfqZspkzxm0GB52vILXzbtmv1apBjqQvlNYcZDQd7VgtdlsmDHfij3BWdqwdB04t89/1O/w1cDnyilFU="
+
+
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
