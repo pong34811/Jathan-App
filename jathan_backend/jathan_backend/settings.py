@@ -218,11 +218,7 @@ REST_AUTH = {
     'OLD_PASSWORD_FIELD_ENABLED': True,
 }
 
-# cors headers
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://172.16.0.136:3000",
-]
+
 CORS_ALLOW_CREDENTIALS = True
 
 # send email
