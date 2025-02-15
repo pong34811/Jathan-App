@@ -20,7 +20,13 @@ class BoardViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         board = serializer.save(created_by=self.request.user)
-        message = f"📌 Board '{board.title}' has been created!"
+        message = (
+            f"✅ Board Created Successfully!\n"
+            f"📌 Title: {board.title}\n"
+            f"📂 Details: {board.details if board.details else 'No details provided'}\n"
+            f"⭐ Starred: {'Yes' if board.is_star else 'No'}\n"
+            f"👤 Created by: {board.created_by}\n"
+        )
         
         if self.request.user.is_notify_create_board:
             send_line_notify(self.request.user, message)
@@ -29,7 +35,13 @@ class BoardViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         board = serializer.save(updated_by=self.request.user)
-        message = f"✏️ Board '{board.title}' has been updated!"
+        message = (
+            f"✏️ Board '{board.title}' has been updated!\n"
+            f"📌 Title: {board.title}\n"
+            f"📂 Details: {board.details if board.details else 'No details provided'}\n"
+            f"⭐ Starred: {'Yes' if board.is_star else 'No'}\n"
+            f"👤 Created by: {board.created_by}\n"
+        )
         
         if self.request.user.is_notify_update_board:
             send_line_notify(self.request.user, message)
@@ -80,6 +92,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             f"🎨 Color: {task.color}\n"
             f"🏷️ Tags: {', '.join(tag.name for tag in task.tags.all()) if task.tags.exists() else 'No tags'}\n"
             f"👤 Assigned by: {task.created_by if task.created_by and task.created_by else 'Unknown'}"
+            f"📅 Creation Date: {task.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
         )
 
 
@@ -110,6 +123,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             f"🎨 Color: {task.color}\n"
             f"🏷️ Tags: {', '.join(tag.name for tag in task.tags.all()) if task.tags.exists() else 'No tags'}\n"
             f"👤 Assigned by: {task.created_by if task.created_by and task.created_by else 'Unknown'}"
+
         )
 
         if self.request.user.is_notify_update_task:
