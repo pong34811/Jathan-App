@@ -7,7 +7,7 @@ function EmailNotify() {
 
     const toggleSetting = async (key) => {
       if (!user) return;
-      const API_URL = `http://127.0.0.1:8000/user/${user.id}/`;
+      const API_URL = `https://api.janhai.space/user/${user.id}/`;
       const token = localStorage.getItem("access");
   
       try {

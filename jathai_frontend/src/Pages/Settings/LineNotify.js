@@ -1,13 +1,14 @@
 import React from "react";
 import { FaTasks, FaLayerGroup } from "react-icons/fa";
 import useUsers from "../Dashboards/Boards/hooks/useUsers";
+import LineOAModal from "./modal/LineOAModal";
 
 const LineNotify = () => {
   const { user, loading, refreshUser } = useUsers();
 
   const toggleSetting = async (key) => {
     if (!user) return;
-    const API_URL = `http://127.0.0.1:8000/user/${user.id}/`;
+    const API_URL = `https://api.janhai.space/user/${user.id}/`;
     const token = localStorage.getItem("access");
 
     try {
@@ -112,9 +113,17 @@ const LineNotify = () => {
                 ))}
               </div>
             ))}
+            <button
+            className="btn btn-success mt-3"
+            data-bs-toggle="modal"
+            data-bs-target="#lineOAModal"
+          >
+            Add LINE OA
+          </button>
           </div>
         </div>
       </div>
+      <LineOAModal />
     </div>
   );
 };

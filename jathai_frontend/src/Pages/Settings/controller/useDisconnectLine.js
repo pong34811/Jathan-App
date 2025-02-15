@@ -19,7 +19,7 @@ const useDisconnectLine = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:8000/user/${user.id}/`, {
+      const response = await fetch(`https://api.janhai.space/user/${user.id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
